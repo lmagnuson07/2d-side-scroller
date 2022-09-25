@@ -1,5 +1,6 @@
 import { Player } from './player';
 import { InputHandler } from './input';
+import { SquareEnemy } from './enemy';
 
 window.addEventListener('load', function(){
     // hides loading message
@@ -32,12 +33,18 @@ window.addEventListener('load', function(){
             this.height = height;
             this.player = new Player(this);
             this.input = new InputHandler(this);
+            this.enemy = new SquareEnemy(this);
         }
         update(deltaTime){
             this.player.update(this.input.keys, deltaTime);
+            this.enemy.update(deltaTime);
         }
         draw(ctx){
             this.player.draw(ctx);
+            this.enemy.draw(ctx);
+        }
+        addEnemy(){
+
         }
     }
 
