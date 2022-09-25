@@ -8,3 +8,4 @@ This will be my first attempt at coding a 2d game using vanilla JavaScript. I wi
 - Animated sprite sheets
 - State design pattern 
 - Responsive design
+- Full screen mode
