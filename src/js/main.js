@@ -33,8 +33,8 @@ window.addEventListener('load', function(){
             this.player = new Player(this);
             this.input = new InputHandler(this);
         }
-        update(){
-            this.player.update();
+        update(deltaTime){
+            this.player.update(this.input.keys, deltaTime);
         }
         draw(ctx){
             this.player.draw(ctx);
@@ -49,7 +49,7 @@ window.addEventListener('load', function(){
         const deltaTime = timeStamp - lastTime;
         lastTime = timeStamp;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        game.update();
+        game.update(deltaTime);
         game.draw(ctx);
         requestAnimationFrame(animate);
     }
