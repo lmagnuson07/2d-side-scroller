@@ -33,4 +33,7 @@ export class Player {
         ctx.strokeStyle = "white";
         ctx.strokeRect(this.x, this.y, this.width, this.height);
     }
+    onGround(){
+        return this.y >= this.game.height - this.height;
+    }
 }

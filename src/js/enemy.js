@@ -3,6 +3,7 @@ class Enemy {
         this.controlFps = 60;
         this.controlFpsInterval = 1000 / this.controlFps;
         this.controlFpsTimer = 0;
+        this.markedForDeletion = false;
     }   
     update(deltaTime){
         // horizontal movement
@@ -13,6 +14,9 @@ class Enemy {
             this.controlFpsTimer += deltaTime;
         }
         this.speedX = this.maxSpeedX;
+
+        // off screen check
+        if (this.x + this.width < 0) this.markedForDeletion = true;
     }
     draw(ctx){
         ctx.strokeStyle = 'white';

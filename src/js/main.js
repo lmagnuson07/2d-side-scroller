@@ -33,18 +33,34 @@ window.addEventListener('load', function(){
             this.height = height;
             this.player = new Player(this);
             this.input = new InputHandler(this);
-            this.enemy = new SquareEnemy(this);
+            this.enemies = [];
+            this.enemyTimer = 0;
+            this.enemyInterval = 1000;
         }
         update(deltaTime){
             this.player.update(this.input.keys, deltaTime);
-            this.enemy.update(deltaTime);
+            this.enemies.forEach(enemy => {
+                enemy.update(deltaTime);
+            });
+            // handle enemies 
+            if (this.enemyTimer > this.enemyInterval){
+                this.addEnemy();
+                this.enemyTimer -= this.enemyInterval;
+            } else {
+                this.enemyTimer += deltaTime;
+            }
+
+            this.enemies = this.enemies.filter(enemy => !enemy.markedForDeletion);
         }
         draw(ctx){
             this.player.draw(ctx);
-            this.enemy.draw(ctx);
+            this.enemies.forEach(enemy => {
+                enemy.draw(ctx);
+            });
         }
         addEnemy(){
-
+            if (Math.random() < 0.5) this.enemies.push(new SquareEnemy(this));
+            console.log(this.enemies)
         }
     }
 
