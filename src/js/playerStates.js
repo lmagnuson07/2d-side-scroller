@@ -2,7 +2,8 @@ const states = {
     IDLE: 0,
     RUNNING: 1,
     JUMPING: 2, 
-    FALLING: 3
+    FALLING: 3, 
+    SITTING: 4
 }
 
 class State {
@@ -24,6 +25,8 @@ export class Idle extends State {
             this.game.player.setState(states.RUNNING);
         } else if (inputKeys.includes(' ')){
             this.game.player.setState(states.JUMPING);
+        } else if (inputKeys.includes('s')){
+            this.game.player.setState(states.SITTING);
         }
     }
 }
@@ -38,6 +41,8 @@ export class Running extends State {
     handleInput(inputKeys){
         if (inputKeys.includes(' ')){
             this.game.player.setState(states.JUMPING);
+        } else if (inputKeys.includes('s')){
+            this.game.player.setState(states.SITTING);
         }
     }
 }
@@ -65,8 +70,20 @@ export class Falling extends State {
         // spritesheet frame data
     }
     handleInput(inputKeys){
-        if (this.game.player.onGround()){
+        if (this.game.player.onGround() && (inputKeys.includes('d') || inputKeys.includes('a'))){
             this.game.player.setState(states.RUNNING);
         }
+    }
+}
+
+export class Sitting extends State {
+    constructor(game){
+        super('SITTING', game);
+    }
+    enter(){
+        // spritesheet frame data
+    }
+    handleInput(inputKeys){
+        
     }
 }

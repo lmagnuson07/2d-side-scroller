@@ -64,7 +64,6 @@ window.addEventListener('load', function(){
         }
         addEnemy(){
             if (Math.random() < 0.5) this.enemies.push(new SquareEnemy(this));
-            console.log(this.enemies)
         }
     }
 
@@ -73,6 +72,7 @@ window.addEventListener('load', function(){
     // Animation loop ////////////////////////////
     let lastTime = 0;
     function animate(timeStamp){
+        // Note: laptop deltatime is 31ish. Might need to limit controls to 30 fps. Jumping animation is slow (about half)
         const deltaTime = timeStamp - lastTime;
         lastTime = timeStamp;
         ctx.clearRect(0, 0, canvas.width, canvas.height);

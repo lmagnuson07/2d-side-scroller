@@ -1,6 +1,7 @@
 import {
     Idle, Running,
-    Jumping, Falling
+    Jumping, Falling,
+    Sitting
 } from './playerStates';
 
 export class Player {
@@ -19,16 +20,23 @@ export class Player {
         this.controlFpsTimer = 0;
         this.states = [
             new Idle(this.game), new Running(this.game),
-            new Jumping(this.game), new Falling(this.game)
+            new Jumping(this.game), new Falling(this.game),
+            new Sitting(this.game)
         ];
         this.currentState = null;
     }
     update(inputKeys, deltaTime){
         this.currentState.handleInput(inputKeys);
-        // horizontal movement
+        // Fps check
         if (this.controlFpsTimer > this.controlFpsInterval){
+            // horizontal movement
             this.controlFpsTimer -= this.controlFpsInterval;
             this.x += this.speed;
+           
+            // vertical movement
+            this.y += this.vy;
+            if (!this.onGround()) this.vy += this.weight;
+            else this.vy = 0;
         } else {
             this.controlFpsTimer += deltaTime;
         }
@@ -40,10 +48,11 @@ export class Player {
         if (this.x < 0) this.x = 0;
         if (this.x > this.game.width - this.width) this.x = this.game.width - this.width;
 
-        // vertical movement
-        this.y += this.vy;
-        if (!this.onGround()) this.vy += this.weight;
-        else this.vy = 0;
+        // Vertical boundries
+        if (this.onCeiling()){
+            this.vy = 0;
+            this.y = 0.1;
+        }
 
         // sets idle state when no input keys are read
         if (inputKeys.length === 0 && this.onGround()) {
@@ -57,6 +66,9 @@ export class Player {
     }
     onGround(){
         return this.y >= this.game.height - this.height;
+    }
+    onCeiling(){
+        return this.y <= 0;
     }
     setState(state){
         this.currentState = this.states[state];
