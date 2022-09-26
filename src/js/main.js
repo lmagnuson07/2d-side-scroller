@@ -1,6 +1,7 @@
 import { Player } from './player';
 import { InputHandler } from './input';
 import { SquareEnemy } from './enemy';
+// - vite build --emptyOutDir
 
 window.addEventListener('load', function(){
     // hides loading message
