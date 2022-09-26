@@ -37,12 +37,15 @@ window.addEventListener('load', function(){
             this.enemies = [];
             this.enemyTimer = 0;
             this.enemyInterval = 1000;
+            this.player.currentState = this.player.states[0];
+            this.player.currentState.enter();
         }
         update(deltaTime){
             this.player.update(this.input.keys, deltaTime);
             this.enemies.forEach(enemy => {
                 enemy.update(deltaTime);
             });
+
             // handle enemies 
             if (this.enemyTimer > this.enemyInterval){
                 this.addEnemy();
@@ -50,7 +53,7 @@ window.addEventListener('load', function(){
             } else {
                 this.enemyTimer += deltaTime;
             }
-
+            console.log(this.player.currentState)
             this.enemies = this.enemies.filter(enemy => !enemy.markedForDeletion);
         }
         draw(ctx){
