@@ -18,7 +18,8 @@ window.addEventListener('load', function(){
     const fullScreenBtn = document.getElementById('fullScreenBtn');
     const toggleFullScreen = function(){
         if (!document.fullScreenElement){
-            canvas.requestFullscreen().catch(err => {
+            canvas.requestFullscreen()
+            .catch(err => {
                 alert(`Error, can't enable full-screen mode: ${err.message}`);
             })
         } else {
@@ -34,6 +35,7 @@ window.addEventListener('load', function(){
             this.height = height;
             this.player = new Player(this);
             this.input = new InputHandler(this);
+            this.frameXMaxFrame = 11;
             this.enemies = [];
             this.enemyTimer = 0;
             this.enemyInterval = 1000;

@@ -1,6 +1,8 @@
 import {
-    Idle, Running,
-    Jumping, Falling,
+    IdleRight, IdleLeft,
+    RunningRight, RunningLeft,
+    JumpingRight, JumpingLeft, 
+    FallingRight, FallingLeft,
     Sitting
 } from './playerStates';
 
@@ -15,12 +17,24 @@ export class Player {
         this.weight = 1;
         this.speed = 0;
         this.maxSpeed = 20;
+        this.imageRight = document.getElementById('player');
+        this.imageLeft = document.getElementById('playerMirrored');
+        this.image = this.imageRight;
+        this.frameX = -1;
+        this.totalFrameX = -1;
+        this.frameY = 0;
+        this.maxFrame;
+        this.spriteFps = 30;
+        this.spriteFrameInterval = 1000 / this.spriteFps;
+        this.spriteFrameTimer = 0;
         this.controlFps = 60;
         this.controlFpsInterval = 1000 / this.controlFps;
         this.controlFpsTimer = 0;
         this.states = [
-            new Idle(this.game), new Running(this.game),
-            new Jumping(this.game), new Falling(this.game),
+            new IdleRight(this.game), new IdleLeft(this.game), 
+            new RunningRight(this.game), new RunningLeft(this.game),
+            new JumpingRight(this.game), new JumpingLeft(this.game), 
+            new FallingRight(this.game), new FallingLeft(this.game),
             new Sitting(this.game)
         ];
         this.currentState = null;
@@ -40,6 +54,8 @@ export class Player {
         } else {
             this.controlFpsTimer += deltaTime;
         }
+
+        // horizontal movement inputs
         if (inputKeys.includes('d')) this.speed = this.maxSpeed;
         else if (inputKeys.includes('a')) this.speed = -this.maxSpeed;
         else this.speed = 0;
@@ -54,15 +70,30 @@ export class Player {
             this.y = 0.1;
         }
 
-        // sets idle state when no input keys are read
-        if (inputKeys.length === 0 && this.onGround()) {
-            this.currentState = this.states[0];
-            this.currentState.enter();
-        }  
+        // sprite animation
+        if (this.spriteFrameTimer > this.spriteFrameInterval){
+            this.spriteFrameTimer -= this.spriteFrameInterval;
+            if (this.totalFrameX < this.maxFrame){
+                this.frameX++;
+                this.totalFrameX++;
+                if (this.totalFrameX === this.game.frameXMaxFrame){
+                    this.frameY++;
+                    this.frameX = 0;
+                }
+                //console.log(`Initial totalFrameX: ${this.totalFrameX}/${this.maxFrame} FrameX: ${this.frameX} | FrameY ${this.frameY}`)
+            } else {
+                this.frameX = 0;
+                this.totalFrameX = 0;
+                this.frameY--;
+                //console.log(`Reset totalFrameX: ${this.totalFrameX}/${this.maxFrame} FrameX: ${this.frameX} | FrameY ${this.frameY}`)
+            }
+        } else {
+            this.spriteFrameTimer += deltaTime;
+        }
     }
     draw(ctx){
-        ctx.strokeStyle = "white";
-        ctx.strokeRect(this.x, this.y, this.width, this.height);
+        ctx.drawImage(this.image, this.frameX * this.width, this.frameY * this.height, this.width, this.height,
+            this.x, this.y, this.width, this.height);
     }
     onGround(){
         return this.y >= this.game.height - this.height;
