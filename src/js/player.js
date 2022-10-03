@@ -40,6 +40,7 @@ export class Player {
         this.currentState = null;
     }
     update(inputKeys, deltaTime){
+        //console.log(inputKeys)
         this.currentState.handleInput(inputKeys);
         // Fps check
         if (this.controlFpsTimer > this.controlFpsInterval){

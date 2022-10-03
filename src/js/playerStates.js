@@ -81,7 +81,9 @@ export class RunningRight extends State {
         this.game.player.frameY = 2;
     }
     handleInput(inputKeys){
-        if (inputKeys.includes(' ')){
+        if (inputKeys.includes('a')){
+            this.game.player.setState(states.RUNNING_LEFT);
+        } else if (inputKeys.includes(' ')){
             this.game.player.setState(states.JUMPING_RIGHT);
         } else if (inputKeys.includes('s')){
             this.game.player.setState(states.SITTING);
@@ -104,7 +106,9 @@ export class RunningLeft extends State {
         this.game.player.frameY = 2;
     }
     handleInput(inputKeys){
-        if (inputKeys.includes(' ')){
+        if (inputKeys.includes('d')){
+            this.game.player.setState(states.RUNNING_RIGHT);
+        } else if (inputKeys.includes(' ')){
             this.game.player.setState(states.JUMPING_LEFT);
         } else if (inputKeys.includes('s')){
             this.game.player.setState(states.SITTING);
@@ -179,6 +183,10 @@ export class FallingRight extends State {
             } else if (inputKeys.length === 0){
                 this.game.player.setState(states.IDLE_RIGHT);
             }
+        } else {
+            if (inputKeys.includes('a')){
+                this.game.player.setState(states.FALLING_LEFT);
+            }
         }
     }
 }
@@ -203,6 +211,10 @@ export class FallingLeft extends State {
                 this.game.player.setState(states.RUNNING_LEFT);
             } else if (inputKeys.length === 0){
                 this.game.player.setState(states.IDLE_LEFT);
+            }
+        } else {
+            if (inputKeys.includes('d')){
+                this.game.player.setState(states.FALLING_RIGHT);
             }
         }
     }
