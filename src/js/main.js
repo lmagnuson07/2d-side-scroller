@@ -33,6 +33,8 @@ window.addEventListener('load', function(){
         constructor(width, height){
             this.width = width;
             this.height = height;
+            this.speed = 0;
+            this.maxSpeed = 3; // 3 px per frame
             this.player = new Player(this);
             this.input = new InputHandler(this);
             this.frameXMaxFrame = 11;

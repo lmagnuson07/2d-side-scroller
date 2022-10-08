@@ -63,7 +63,7 @@ export class Player {
 
         // horizontal boundries
         if (this.x < 0) this.x = 0;
-        if (this.x > this.game.width - this.width) this.x = this.game.width - this.width;
+        if (this.x > this.game.width - this.width * 0.5) this.x = this.game.width - this.width * 0.5;
 
         // Vertical boundries
         if (this.onCeiling()){
@@ -102,8 +102,9 @@ export class Player {
     onCeiling(){
         return this.y <= 0;
     }
-    setState(state){
+    setState(state, speed){
         this.currentState = this.states[state];
+        this.game.speed = this.game.maxSpeed * speed;
         this.currentState.enter();
     }
 }

@@ -32,13 +32,13 @@ export class IdleRight extends State {
     }
     handleInput(inputKeys){
         if (inputKeys.includes('d')){
-            this.game.player.setState(states.RUNNING_RIGHT);
+            this.game.player.setState(states.RUNNING_RIGHT, 1);
         } else if (inputKeys.includes('a')){
-            this.game.player.setState(states.RUNNING_LEFT);
+            this.game.player.setState(states.RUNNING_LEFT, 1);
         } else if (inputKeys.includes(' ')){
-            this.game.player.setState(states.JUMPING_RIGHT);
+            this.game.player.setState(states.JUMPING_RIGHT, 1);
         } else if (inputKeys.includes('s')){
-            this.game.player.setState(states.DODGING_RIGHT);
+            this.game.player.setState(states.DODGING_RIGHT, 0);
         }
     }
 }
@@ -57,13 +57,13 @@ export class IdleLeft extends State {
     }
     handleInput(inputKeys){
         if (inputKeys.includes('d')){
-            this.game.player.setState(states.RUNNING_RIGHT);
+            this.game.player.setState(states.RUNNING_RIGHT, 1);
         } else if (inputKeys.includes('a')){
-            this.game.player.setState(states.RUNNING_LEFT);
+            this.game.player.setState(states.RUNNING_LEFT, 1);
         } else if (inputKeys.includes(' ')){
-            this.game.player.setState(states.JUMPING_LEFT);
+            this.game.player.setState(states.JUMPING_LEFT, 1);
         } else if (inputKeys.includes('s')){
-            this.game.player.setState(states.DODGING_LEFT);
+            this.game.player.setState(states.DODGING_LEFT, 0);
         }
     }
 }
@@ -83,13 +83,13 @@ export class RunningRight extends State {
     }
     handleInput(inputKeys){
         if (inputKeys.includes('a')){
-            this.game.player.setState(states.RUNNING_LEFT);
+            this.game.player.setState(states.RUNNING_LEFT, 1);
         } else if (inputKeys.includes(' ')){
-            this.game.player.setState(states.JUMPING_RIGHT);
+            this.game.player.setState(states.JUMPING_RIGHT, 1);
         } else if (inputKeys.includes('s')){
-            this.game.player.setState(states.DODGING_RIGHT);
+            this.game.player.setState(states.DODGING_RIGHT, 0);
         } else if (inputKeys.length === 0){
-            this.game.player.setState(states.IDLE_RIGHT);
+            this.game.player.setState(states.IDLE_RIGHT, 0);
         }
     }
 }
@@ -108,13 +108,13 @@ export class RunningLeft extends State {
     }
     handleInput(inputKeys){
         if (inputKeys.includes('d')){
-            this.game.player.setState(states.RUNNING_RIGHT);
+            this.game.player.setState(states.RUNNING_RIGHT, 1);
         } else if (inputKeys.includes(' ')){
-            this.game.player.setState(states.JUMPING_LEFT);
+            this.game.player.setState(states.JUMPING_LEFT, 1);
         } else if (inputKeys.includes('s')){
-            this.game.player.setState(states.DODGING_LEFT);
+            this.game.player.setState(states.DODGING_LEFT, 0);
         } else if (inputKeys.length === 0){
-            this.game.player.setState(states.IDLE_LEFT);
+            this.game.player.setState(states.IDLE_LEFT, 0);
         }
     }
 }
@@ -134,9 +134,9 @@ export class JumpingRight extends State {
     }
     handleInput(inputKeys){
         if (this.game.player.vy > this.game.player.weight){
-            this.game.player.setState(states.FALLING_RIGHT);
+            this.game.player.setState(states.FALLING_RIGHT, 1);
         } else if (inputKeys.includes('a')) {
-            this.game.player.setState(states.JUMPING_LEFT);
+            this.game.player.setState(states.JUMPING_LEFT, 1);
         }
     }
 }
@@ -156,9 +156,9 @@ export class JumpingLeft extends State {
     }
     handleInput(inputKeys){
         if (this.game.player.vy > this.game.player.weight){
-            this.game.player.setState(states.FALLING_LEFT);
+            this.game.player.setState(states.FALLING_LEFT, 1);
         } else if (inputKeys.includes('d')) {
-            this.game.player.setState(states.JUMPING_RIGHT);
+            this.game.player.setState(states.JUMPING_RIGHT, 1);
         }
     }
 }
@@ -178,15 +178,15 @@ export class FallingRight extends State {
     handleInput(inputKeys){
         if (this.game.player.onGround()){
             if (inputKeys.includes('d')){
-                this.game.player.setState(states.RUNNING_RIGHT);
+                this.game.player.setState(states.RUNNING_RIGHT, 1);
             } else if (inputKeys.includes('a')){
-                this.game.player.setState(states.RUNNING_LEFT);
+                this.game.player.setState(states.RUNNING_LEFT, 1);
             } else if (inputKeys.length === 0){
-                this.game.player.setState(states.IDLE_RIGHT);
+                this.game.player.setState(states.IDLE_RIGHT, 0);
             }
         } else {
             if (inputKeys.includes('a')){
-                this.game.player.setState(states.FALLING_LEFT);
+                this.game.player.setState(states.FALLING_LEFT, 1);
             }
         }
     }
@@ -207,15 +207,15 @@ export class FallingLeft extends State {
     handleInput(inputKeys){
         if (this.game.player.onGround()){
             if (inputKeys.includes('d')){
-                this.game.player.setState(states.RUNNING_RIGHT);
+                this.game.player.setState(states.RUNNING_RIGHT, 1);
             } else if (inputKeys.includes('a')){
-                this.game.player.setState(states.RUNNING_LEFT);
+                this.game.player.setState(states.RUNNING_LEFT, 1);
             } else if (inputKeys.length === 0){
-                this.game.player.setState(states.IDLE_LEFT);
+                this.game.player.setState(states.IDLE_LEFT, 0);
             }
         } else {
             if (inputKeys.includes('d')){
-                this.game.player.setState(states.FALLING_RIGHT);
+                this.game.player.setState(states.FALLING_RIGHT, 1);
             }
         }
     }
@@ -235,12 +235,14 @@ export class DodgingRight extends State {
     }
     handleInput(inputKeys){
         if (inputKeys.length === 0){
-            this.game.player.setState(states.IDLE_RIGHT);
+            this.game.player.setState(states.IDLE_RIGHT, 0);
         } else if (inputKeys.includes('d') && !inputKeys.includes('s')){
-            this.game.player.setState(states.RUNNING_RIGHT);
-        } else if (inputKeys.includes('a')){
-            this.game.player.setState(states.DODGING_LEFT);
-        } 
+            this.game.player.setState(states.RUNNING_RIGHT, 1);
+        } else if (inputKeys.includes('a') && !inputKeys.includes('s')){
+            this.game.player.setState(states.RUNNING_LEFT, 1);
+        } else {
+            this.game.player.speed = 0;
+        }
     }
 }
 
@@ -258,11 +260,13 @@ export class DodgingLeft extends State {
     }
     handleInput(inputKeys){
         if (inputKeys.length === 0){
-            this.game.player.setState(states.IDLE_LEFT);
+            this.game.player.setState(states.IDLE_LEFT, 0);
         } else if (inputKeys.includes('a') && !inputKeys.includes('s')){
-            this.game.player.setState(states.RUNNING_LEFT);
-        } else if (inputKeys.includes('d')){
-            this.game.player.setState(states.DODGING_RIGHT);
+            this.game.player.setState(states.RUNNING_LEFT, 1);
+        } else if (inputKeys.includes('d') && !inputKeys.includes('s')){
+            this.game.player.setState(states.RUNNING_RIGHT, 1);
+        } else {
+            this.game.player.speed = 0;
         }
     }
 }

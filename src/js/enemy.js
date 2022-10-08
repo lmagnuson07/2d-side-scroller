@@ -16,7 +16,7 @@ class Enemy {
         // horizontal movement
         if (this.controlFpsTimer > this.controlFpsInterval){
             this.controlFpsTimer -= this.controlFpsInterval;
-            this.x -= this.speedX;
+            this.x -= this.speedX + this.game.speed;
         } else {
             this.controlFpsTimer += deltaTime;
         }
