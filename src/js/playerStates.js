@@ -36,7 +36,11 @@ export class IdleRight extends State {
         } else if (inputKeys.includes('a')){
             this.game.player.setState(states.RUNNING_LEFT, 1);
         } else if (inputKeys.includes(' ')){
-            this.game.player.setState(states.JUMPING_RIGHT, 1);
+            if (inputKeys.includes('d')){
+                this.game.player.setState(states.JUMPING_RIGHT, 1);
+            } else {
+                this.game.player.setState(states.JUMPING_RIGHT, 0);
+            }
         } else if (inputKeys.includes('s')){
             this.game.player.setState(states.DODGING_RIGHT, 0);
         }
@@ -52,7 +56,7 @@ export class IdleLeft extends State {
         this.game.player.image = this.game.player.imageLeft;
         this.game.player.frameX = 0; 
         this.game.player.totalFrameX = 0;
-        this.game.player.maxFrame = 20; // total number of frames for the animation - 1
+        this.game.player.maxFrame = 20;
         this.game.player.frameY = 0;
     }
     handleInput(inputKeys){
@@ -61,7 +65,11 @@ export class IdleLeft extends State {
         } else if (inputKeys.includes('a')){
             this.game.player.setState(states.RUNNING_LEFT, 1);
         } else if (inputKeys.includes(' ')){
-            this.game.player.setState(states.JUMPING_LEFT, 1);
+            if (inputKeys.includes('a')){
+                this.game.player.setState(states.JUMPING_LEFT, 1);
+            } else {
+                this.game.player.setState(states.JUMPING_LEFT, 0);
+            }
         } else if (inputKeys.includes('s')){
             this.game.player.setState(states.DODGING_LEFT, 0);
         }
@@ -134,9 +142,17 @@ export class JumpingRight extends State {
     }
     handleInput(inputKeys){
         if (this.game.player.vy > this.game.player.weight){
-            this.game.player.setState(states.FALLING_RIGHT, 1);
+            if (inputKeys.includes('d')){
+                this.game.player.setState(states.FALLING_RIGHT, 1);
+            } else {
+                this.game.player.setState(states.FALLING_RIGHT, 0);
+            }
         } else if (inputKeys.includes('a')) {
             this.game.player.setState(states.JUMPING_LEFT, 1);
+        } else if (inputKeys.includes('d')){
+            this.game.player.setState(states.JUMPING_RIGHT, 1)
+        } else if (inputKeys.length === 0){
+            this.game.player.setState(states.JUMPING_RIGHT, 0);
         }
     }
 }
@@ -156,9 +172,17 @@ export class JumpingLeft extends State {
     }
     handleInput(inputKeys){
         if (this.game.player.vy > this.game.player.weight){
-            this.game.player.setState(states.FALLING_LEFT, 1);
+            if (inputKeys.includes('a')){
+                this.game.player.setState(states.FALLING_LEFT, 1);
+            } else {
+                this.game.player.setState(states.FALLING_LEFT, 0);
+            }
         } else if (inputKeys.includes('d')) {
             this.game.player.setState(states.JUMPING_RIGHT, 1);
+        } else if (inputKeys.includes('a')){
+            this.game.player.setState(states.JUMPING_LEFT, 1);
+        } else if (inputKeys.length === 0){
+            this.game.player.setState(states.JUMPING_LEFT, 0);
         }
     }
 }
@@ -187,6 +211,10 @@ export class FallingRight extends State {
         } else {
             if (inputKeys.includes('a')){
                 this.game.player.setState(states.FALLING_LEFT, 1);
+            } else if (inputKeys.includes('d')){
+                this.game.player.setState(states.FALLING_RIGHT, 1);
+            } else if (inputKeys.length === 0){
+                this.game.player.setState(states.FALLING_RIGHT, 0);
             }
         }
     }
@@ -216,6 +244,10 @@ export class FallingLeft extends State {
         } else {
             if (inputKeys.includes('d')){
                 this.game.player.setState(states.FALLING_RIGHT, 1);
+            } else if (inputKeys.includes('a')){
+                this.game.player.setState(states.FALLING_LEFT, 1);
+            } else if (inputKeys.length === 0){
+                this.game.player.setState(states.FALLING_LEFT, 0);
             }
         }
     }
