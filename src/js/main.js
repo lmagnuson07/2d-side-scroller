@@ -1,6 +1,6 @@
 import { Player } from './player';
 import { InputHandler } from './input';
-import { SquareEnemy } from './enemy';
+import { Beetle } from './enemy';
 // - vite build --emptyOutDir
 
 window.addEventListener('load', function(){
@@ -55,7 +55,7 @@ window.addEventListener('load', function(){
             } else {
                 this.enemyTimer += deltaTime;
             }
-            console.log(this.player.currentState)
+            //console.log(this.player.currentState)
             this.enemies = this.enemies.filter(enemy => !enemy.markedForDeletion);
         }
         draw(ctx){
@@ -65,7 +65,7 @@ window.addEventListener('load', function(){
             });
         }
         addEnemy(){
-            if (Math.random() < 0.5) this.enemies.push(new SquareEnemy(this));
+            if (Math.random() < 0.5) this.enemies.push(new Beetle(this));
         }
     }
 

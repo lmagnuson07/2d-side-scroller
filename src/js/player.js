@@ -3,7 +3,7 @@ import {
     RunningRight, RunningLeft,
     JumpingRight, JumpingLeft, 
     FallingRight, FallingLeft,
-    Sitting
+    DodgingRight, DodgingLeft
 } from './playerStates';
 
 export class Player {
@@ -12,7 +12,7 @@ export class Player {
         this.width = 360;
         this.height = 384;
         this.x = 0;
-        this.y = this.game.height - this.height;
+        this.y = this.game.height - this.height * 0.5;
         this.vy = 0;
         this.weight = 1;
         this.speed = 0;
@@ -35,7 +35,7 @@ export class Player {
             new RunningRight(this.game), new RunningLeft(this.game),
             new JumpingRight(this.game), new JumpingLeft(this.game), 
             new FallingRight(this.game), new FallingLeft(this.game),
-            new Sitting(this.game)
+            new DodgingRight(this.game), new DodgingLeft(this.game)
         ];
         this.currentState = null;
     }
@@ -94,10 +94,10 @@ export class Player {
     }
     draw(ctx){
         ctx.drawImage(this.image, this.frameX * this.width, this.frameY * this.height, this.width, this.height,
-            this.x, this.y, this.width, this.height);
+            this.x, this.y, this.width * 0.5, this.height * 0.5);
     }
     onGround(){
-        return this.y >= this.game.height - this.height;
+        return this.y >= this.game.height - this.height * 0.5;
     }
     onCeiling(){
         return this.y <= 0;
