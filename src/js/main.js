@@ -15,18 +15,18 @@ window.addEventListener('load', function(){
     canvas.height = 720;
     
     // implements the full screen functionality 
-    const fullScreenBtn = document.getElementById('fullScreenBtn');
-    const toggleFullScreen = function(){
-        if (!document.fullScreenElement){
-            canvas.requestFullscreen()
-            .catch(err => {
-                alert(`Error, can't enable full-screen mode: ${err.message}`);
-            })
-        } else {
-            document.exitFullscreen();
-        }
-    }
-    fullScreenBtn.addEventListener('click', toggleFullScreen);
+    // const fullScreenBtn = document.getElementById('fullScreenBtn');
+    // const toggleFullScreen = function(){
+    //     if (!document.fullScreenElement){
+    //         canvas.requestFullscreen()
+    //         .catch(err => {
+    //             alert(`Error, can't enable full-screen mode: ${err.message}`);
+    //         })
+    //     } else {
+    //         document.exitFullscreen();
+    //     }
+    // }
+    // fullScreenBtn.addEventListener('click', toggleFullScreen);
 
     // Game class ////////////////////////////////
     class Game {

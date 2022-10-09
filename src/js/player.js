@@ -27,6 +27,11 @@ export class Player {
         this.totalFrameX = -1;
         this.frameY = 0;
         this.maxFrame;
+        // hitbox properties
+        this.playerRadius = this.width * 0.5;
+        this.playerRadiusModifier = 0.50;
+        this.hitboxOffsetX = 0;
+        this.hitboxOffsetY = 18;
         // sprite animation fps properties
         this.spriteFps = 30;
         this.spriteFrameInterval = 1000 / this.spriteFps;
@@ -104,18 +109,17 @@ export class Player {
         }
     }
     draw(ctx){
-        let radius = this.width * 0.5;
         // hitboxes (toggle debug mode to see)
         if (this.game.debugMode){
             ctx.strokeStyle = 'black';
             ctx.beginPath();
-            ctx.arc(this.x + radius, this.y + this.height * 0.5, radius, 
+            ctx.arc(this.x + this.hitboxOffsetX + this.playerRadius, this.y + this.hitboxOffsetY + (this.height * 0.5), this.playerRadius * this.playerRadiusModifier, 
                 0, Math.PI * 2);
             ctx.stroke();
 
             ctx.strokeStyle = 'blue';
             ctx.beginPath();
-            ctx.arc(this.x, this.y, radius, 
+            ctx.arc(this.x, this.y, this.playerRadius, 
                 0, Math.PI * 2);
             ctx.stroke();
 
@@ -138,17 +142,16 @@ export class Player {
         this.currentState.enter();
     }
     checkCollision(){
-        let playerRadius = this.width * 0.5;
         this.game.enemies.forEach(enemy => {
             let enemyRadius = enemy.width * 0.5;
             if (enemy.enemyType === "Beetle"){
                 
             }
             // the vy value makes the hitboxes overlap a bit when there is a collision vertically (player landing on enemy head)
-            const dx = (enemy.x + enemyRadius) - (this.x + playerRadius);
-            const dy = (enemy.y + enemyRadius) - (this.y + playerRadius);
+            const dx = (enemy.x + enemyRadius) - (this.x + this.hitboxOffsetX + this.playerRadius);
+            const dy = (enemy.y + enemyRadius) - (this.y + this.hitboxOffsetY + this.playerRadius);
             const distance = Math.sqrt(dx * dx + dy * dy);
-            if (distance < (enemyRadius) + (playerRadius + this.maxSpeed)){
+            if (distance < enemyRadius + (this.playerRadius * this.playerRadiusModifier)){
                 this.game.gameOver = true;
             }
         });
