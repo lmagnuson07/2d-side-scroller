@@ -1,15 +1,15 @@
 class Layer {
     constructor(game, width, height, speedModifier, image, cloudType){
         this.game = game;
-        // cloud check properties
-        this.cloudType = cloudType;
-        this.cloudSpeedModifier = 0;
         this.width = width;
         this.height = height;
         this.speedModifier = speedModifier;
         this.image = image;
         this.x = 0;
         this.y = 0;
+        // cloud check properties
+        this.cloudType = cloudType;
+        this.cloudSpeedModifier = 0;
         // controls fps properties
         this.controlFps = 60;
         this.controlFpsInterval = 1000 / this.controlFps;
@@ -46,9 +46,9 @@ export class Background {
         this.layer6Image = document.getElementById('layer6');
         this.layer7Image = document.getElementById('layer7');
         this.layer1 = new Layer(this.game, this.width, this.height, 0, this.layer1Image);
-        this.layer2 = new Layer(this.game, this.width, this.height, 1, this.layer2Image, "fast"); // clouds
+        this.layer2 = new Layer(this.game, this.width, this.height, 1, this.layer2Image, "slow"); // clouds
         this.layer3 = new Layer(this.game, this.width, this.height, 0, this.layer3Image);
-        this.layer4 = new Layer(this.game, this.width, this.height, 1, this.layer4Image, "slow"); // clouds
+        this.layer4 = new Layer(this.game, this.width, this.height, 1, this.layer4Image, "fast"); // clouds
         this.layer5 = new Layer(this.game, this.width, this.height, 0, this.layer5Image);
         this.layer6 = new Layer(this.game, this.width, this.height, 0, this.layer6Image);
         this.layer7 = new Layer(this.game, this.width, this.height, 0, this.layer7Image);

@@ -34,7 +34,7 @@ window.addEventListener('load', function(){
         constructor(width, height){
             this.width = width;
             this.height = height;
-            this.groundMargin = 125;
+            this.groundMargin = 66;
             // game speed properties
             this.speed = 0;
             this.maxSpeed = 3; // 3 px per frame

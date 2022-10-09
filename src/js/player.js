@@ -13,7 +13,7 @@ export class Player {
         this.width = 180;
         this.height = 192;
         this.x = 0;
-        this.y = this.game.height - this.height;
+        this.y = this.game.height - this.height - this.game.groundMargin;
         this.vy = 0;
         this.weight = 1;
         this.speed = 0;
@@ -88,6 +88,9 @@ export class Player {
             this.vy = 0;
             this.y = 1;
         }
+        if (this.y > this.game.height - this.height - this.game.groundMargin){
+            this.y = this.game.height - this.height - this.game.groundMargin;
+        }
 
         // sprite animation
         if (this.spriteFrameTimer > this.spriteFrameInterval){
@@ -133,7 +136,7 @@ export class Player {
             this.x, this.y, this.width, this.height);
     }
     onGround(){
-        return this.y >= this.game.height - this.height;
+        return this.y >= this.game.height - this.height - this.game.groundMargin;
     }
     onCeiling(){
         return this.y <= 0;

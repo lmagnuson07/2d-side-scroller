@@ -73,11 +73,12 @@ export class Beetle extends Enemy {
         super();
         this.game = game;
         this.enemyType = "Beetle";
+        this.grondMarginModifier = Math.random() > 0.8 ? 3 : Math.random() > 0.6 ? 2 : 0;
         // movement and position properties
         this.width = 143;
         this.height = 125;
         this.x = this.game.width;
-        this.y = this.game.height - this.height;
+        this.y = this.game.height - this.height - this.game.groundMargin - this.grondMarginModifier;
         this.image = document.getElementById('beetle');
         // speed properties
         this.speedX = 0;
