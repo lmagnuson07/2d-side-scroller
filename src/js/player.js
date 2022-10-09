@@ -22,7 +22,7 @@ export class Player {
         this.imageRight = document.getElementById('player');
         this.imageLeft = document.getElementById('playerMirrored');
         this.image = this.imageRight;
-        // frame properties
+        // spritesheet frame properties
         this.frameX = -1;
         this.totalFrameX = -1;
         this.frameY = 0;
