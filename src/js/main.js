@@ -1,6 +1,7 @@
 import { Player } from './player';
 import { InputHandler } from './input';
 import { Beetle } from './enemy';
+import { Background } from './background';
 // - vite build --emptyOutDir
 
 window.addEventListener('load', function(){
@@ -12,7 +13,7 @@ window.addEventListener('load', function(){
     const canvas = document.getElementById('canvas1');
     const ctx = canvas.getContext('2d');
     canvas.width = 1400;
-    canvas.height = 720;
+    canvas.height = 768;
     
     // implements the fullscreen functionality 
     // const fullScreenBtn = document.getElementById('fullScreenBtn');
@@ -33,20 +34,31 @@ window.addEventListener('load', function(){
         constructor(width, height){
             this.width = width;
             this.height = height;
+            this.groundMargin = 125;
+            // game speed properties
             this.speed = 0;
             this.maxSpeed = 3; // 3 px per frame
+            // frame properties
+            this.frameXMaxFrame = 11;
+            // composite classes
             this.player = new Player(this);
             this.input = new InputHandler(this);
-            this.frameXMaxFrame = 11;
+            this.background = new Background(this);
+            // object arrays
             this.enemies = [];
+            // enemy timer properties
             this.enemyTimer = 0;
             this.enemyInterval = 1000;
+            // player state properties
             this.player.currentState = this.player.states[0];
             this.player.currentState.enter();
+            // game function/settings properties
             this.debugMode = false;
             this.gameOver = false;
         }
         update(deltaTime){
+            // Update methods
+            this.background.update(deltaTime);
             this.player.update(this.input.keys, deltaTime);
             this.enemies.forEach(enemy => {
                 enemy.update(deltaTime);
@@ -59,10 +71,11 @@ window.addEventListener('load', function(){
             } else {
                 this.enemyTimer += deltaTime;
             }
-            console.log(this.player.currentState)
+            //console.log(this.player.currentState)
             this.enemies = this.enemies.filter(enemy => !enemy.markedForDeletion);
         }
         draw(ctx){
+            this.background.draw(ctx);
             this.player.draw(ctx);
             this.enemies.forEach(enemy => {
                 enemy.draw(ctx);
