@@ -34,7 +34,7 @@ window.addEventListener('load', function(){
             this.width = width;
             this.height = height;
             this.speed = 0;
-            this.maxSpeed = 10; // 3 px per frame
+            this.maxSpeed = 3; // 3 px per frame
             this.player = new Player(this);
             this.input = new InputHandler(this);
             this.frameXMaxFrame = 11;
@@ -43,6 +43,8 @@ window.addEventListener('load', function(){
             this.enemyInterval = 1000;
             this.player.currentState = this.player.states[0];
             this.player.currentState.enter();
+            this.debugMode = true;
+            this.gameOver = false;
         }
         update(deltaTime){
             this.player.update(this.input.keys, deltaTime);
@@ -57,7 +59,7 @@ window.addEventListener('load', function(){
             } else {
                 this.enemyTimer += deltaTime;
             }
-            //console.log(this.player.currentState)
+            console.log(this.player.currentState)
             this.enemies = this.enemies.filter(enemy => !enemy.markedForDeletion);
         }
         draw(ctx){
@@ -82,7 +84,7 @@ window.addEventListener('load', function(){
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         game.update(deltaTime);
         game.draw(ctx);
-        requestAnimationFrame(animate);
+        if (!game.gameOver) requestAnimationFrame(animate);
     }
     animate(0);
 });

@@ -34,7 +34,7 @@ export class IdleRight extends State {
         if (inputKeys.includes('d')){
             this.game.player.setState(states.RUNNING_RIGHT, 1);
         } else if (inputKeys.includes('a')){
-            this.game.player.setState(states.RUNNING_LEFT, 1);
+            this.game.player.setState(states.RUNNING_LEFT, 0);
         } else if (inputKeys.includes(' ')){
             if (inputKeys.includes('d')){
                 this.game.player.setState(states.JUMPING_RIGHT, 1);
@@ -63,10 +63,10 @@ export class IdleLeft extends State {
         if (inputKeys.includes('d')){
             this.game.player.setState(states.RUNNING_RIGHT, 1);
         } else if (inputKeys.includes('a')){
-            this.game.player.setState(states.RUNNING_LEFT, 1);
+            this.game.player.setState(states.RUNNING_LEFT, 0);
         } else if (inputKeys.includes(' ')){
             if (inputKeys.includes('a')){
-                this.game.player.setState(states.JUMPING_LEFT, 1);
+                this.game.player.setState(states.JUMPING_LEFT, 0);
             } else {
                 this.game.player.setState(states.JUMPING_LEFT, 0);
             }
@@ -91,7 +91,7 @@ export class RunningRight extends State {
     }
     handleInput(inputKeys){
         if (inputKeys.includes('a')){
-            this.game.player.setState(states.RUNNING_LEFT, 1);
+            this.game.player.setState(states.RUNNING_LEFT, 0);
         } else if (inputKeys.includes(' ')){
             this.game.player.setState(states.JUMPING_RIGHT, 1);
         } else if (inputKeys.includes('s')){
@@ -118,7 +118,7 @@ export class RunningLeft extends State {
         if (inputKeys.includes('d')){
             this.game.player.setState(states.RUNNING_RIGHT, 1);
         } else if (inputKeys.includes(' ')){
-            this.game.player.setState(states.JUMPING_LEFT, 1);
+            this.game.player.setState(states.JUMPING_LEFT, 0);
         } else if (inputKeys.includes('s')){
             this.game.player.setState(states.DODGING_LEFT, 0);
         } else if (inputKeys.length === 0){
@@ -148,7 +148,7 @@ export class JumpingRight extends State {
                 this.game.player.setState(states.FALLING_RIGHT, 0);
             }
         } else if (inputKeys.includes('a')) {
-            this.game.player.setState(states.JUMPING_LEFT, 1);
+            this.game.player.setState(states.JUMPING_LEFT, 0);
         } else if (inputKeys.includes('d')){
             this.game.player.setState(states.JUMPING_RIGHT, 1)
         } else if (inputKeys.length === 0){
@@ -173,14 +173,14 @@ export class JumpingLeft extends State {
     handleInput(inputKeys){
         if (this.game.player.vy > this.game.player.weight){
             if (inputKeys.includes('a')){
-                this.game.player.setState(states.FALLING_LEFT, 1);
+                this.game.player.setState(states.FALLING_LEFT, 0);
             } else {
                 this.game.player.setState(states.FALLING_LEFT, 0);
             }
         } else if (inputKeys.includes('d')) {
             this.game.player.setState(states.JUMPING_RIGHT, 1);
         } else if (inputKeys.includes('a')){
-            this.game.player.setState(states.JUMPING_LEFT, 1);
+            this.game.player.setState(states.JUMPING_LEFT, 0);
         } else if (inputKeys.length === 0){
             this.game.player.setState(states.JUMPING_LEFT, 0);
         }
@@ -204,13 +204,15 @@ export class FallingRight extends State {
             if (inputKeys.includes('d')){
                 this.game.player.setState(states.RUNNING_RIGHT, 1);
             } else if (inputKeys.includes('a')){
-                this.game.player.setState(states.RUNNING_LEFT, 1);
+                this.game.player.setState(states.RUNNING_LEFT, 0);
+            } else if (inputKeys.includes('s')){
+                this.game.player.setState(states.DODGING_RIGHT, 0);
             } else if (inputKeys.length === 0){
                 this.game.player.setState(states.IDLE_RIGHT, 0);
             }
         } else {
             if (inputKeys.includes('a')){
-                this.game.player.setState(states.FALLING_LEFT, 1);
+                this.game.player.setState(states.FALLING_LEFT, 0);
             } else if (inputKeys.includes('d')){
                 this.game.player.setState(states.FALLING_RIGHT, 1);
             } else if (inputKeys.length === 0){
@@ -237,7 +239,9 @@ export class FallingLeft extends State {
             if (inputKeys.includes('d')){
                 this.game.player.setState(states.RUNNING_RIGHT, 1);
             } else if (inputKeys.includes('a')){
-                this.game.player.setState(states.RUNNING_LEFT, 1);
+                this.game.player.setState(states.RUNNING_LEFT, 0);
+            } else if (inputKeys.includes('s')){
+                this.game.player.setState(states.DODGING_LEFT, 0);
             } else if (inputKeys.length === 0){
                 this.game.player.setState(states.IDLE_LEFT, 0);
             }
@@ -245,7 +249,7 @@ export class FallingLeft extends State {
             if (inputKeys.includes('d')){
                 this.game.player.setState(states.FALLING_RIGHT, 1);
             } else if (inputKeys.includes('a')){
-                this.game.player.setState(states.FALLING_LEFT, 1);
+                this.game.player.setState(states.FALLING_LEFT, 0);
             } else if (inputKeys.length === 0){
                 this.game.player.setState(states.FALLING_LEFT, 0);
             }
@@ -255,7 +259,7 @@ export class FallingLeft extends State {
 
 export class DodgingRight extends State {
     constructor(game){
-        super('DODGING', game);
+        super('DODGING RIGHT', game);
     }
     enter(){
         // spritesheet frame data
@@ -271,7 +275,7 @@ export class DodgingRight extends State {
         } else if (inputKeys.includes('d') && !inputKeys.includes('s')){
             this.game.player.setState(states.RUNNING_RIGHT, 1);
         } else if (inputKeys.includes('a') && !inputKeys.includes('s')){
-            this.game.player.setState(states.RUNNING_LEFT, 1);
+            this.game.player.setState(states.RUNNING_LEFT, 0);
         } else {
             this.game.player.speed = 0;
         }
@@ -294,7 +298,7 @@ export class DodgingLeft extends State {
         if (inputKeys.length === 0){
             this.game.player.setState(states.IDLE_LEFT, 0);
         } else if (inputKeys.includes('a') && !inputKeys.includes('s')){
-            this.game.player.setState(states.RUNNING_LEFT, 1);
+            this.game.player.setState(states.RUNNING_LEFT, 0);
         } else if (inputKeys.includes('d') && !inputKeys.includes('s')){
             this.game.player.setState(states.RUNNING_RIGHT, 1);
         } else {

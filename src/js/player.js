@@ -9,27 +9,33 @@ import {
 export class Player {
     constructor(game){
         this.game = game;
-        this.width = 360;
-        this.height = 384;
+        // movement and position properties
+        this.width = 180;
+        this.height = 192;
         this.x = 0;
-        this.y = this.game.height - this.height * 0.5;
+        this.y = this.game.height - this.height;
         this.vy = 0;
         this.weight = 1;
         this.speed = 0;
-        this.maxSpeed = 20;
+        this.maxSpeed = 10;
+        // image properties
         this.imageRight = document.getElementById('player');
         this.imageLeft = document.getElementById('playerMirrored');
         this.image = this.imageRight;
+        // frame properties
         this.frameX = -1;
         this.totalFrameX = -1;
         this.frameY = 0;
         this.maxFrame;
+        // sprite animation fps properties
         this.spriteFps = 30;
         this.spriteFrameInterval = 1000 / this.spriteFps;
         this.spriteFrameTimer = 0;
+        // controls fps properties
         this.controlFps = 60;
         this.controlFpsInterval = 1000 / this.controlFps;
         this.controlFpsTimer = 0;
+        // state properties
         this.states = [
             new IdleRight(this.game), new IdleLeft(this.game), 
             new RunningRight(this.game), new RunningLeft(this.game),
@@ -41,6 +47,7 @@ export class Player {
     }
     update(inputKeys, deltaTime){
         //console.log(inputKeys)
+        this.checkCollision();
         this.currentState.handleInput(inputKeys);
         // Fps check
         if (this.controlFpsTimer > this.controlFpsInterval){
@@ -51,7 +58,11 @@ export class Player {
             // vertical movement
             this.y += this.vy;
             if (!this.onGround()) this.vy += this.weight;
-            else this.vy = 0;
+            else {
+                this.vy = 0;
+                // fixes a bug with the onCeiling method that was causing player to appear slightly below the bottom boundry. 
+                this.y = this.game.height - this.height;
+            }
         } else {
             this.controlFpsTimer += deltaTime;
         }
@@ -63,12 +74,12 @@ export class Player {
 
         // horizontal boundries
         if (this.x < 0) this.x = 0;
-        if (this.x > this.game.width - this.width * 0.5) this.x = this.game.width - this.width * 0.5;
+        if (this.x > this.game.width - this.width) this.x = this.game.width - this.width;
 
         // Vertical boundries
         if (this.onCeiling()){
             this.vy = 0;
-            this.y = 0.1;
+            this.y = 1;
         }
 
         // sprite animation
@@ -93,11 +104,30 @@ export class Player {
         }
     }
     draw(ctx){
+        let radius = this.width * 0.5;
+        // hitboxes (toggle debug mode to see)
+        if (this.game.debugMode){
+            ctx.strokeStyle = 'black';
+            ctx.beginPath();
+            ctx.arc(this.x + radius, this.y + this.height * 0.5, radius, 
+                0, Math.PI * 2);
+            ctx.stroke();
+
+            ctx.strokeStyle = 'blue';
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, radius, 
+                0, Math.PI * 2);
+            ctx.stroke();
+
+            ctx.strokeStyle = 'white';
+            ctx.strokeRect(this.x, this.y, this.width, this.height);
+        } 
+
         ctx.drawImage(this.image, this.frameX * this.width, this.frameY * this.height, this.width, this.height,
-            this.x, this.y, this.width * 0.5, this.height * 0.5);
+            this.x, this.y, this.width, this.height);
     }
     onGround(){
-        return this.y >= this.game.height - this.height * 0.5;
+        return this.y >= this.game.height - this.height;
     }
     onCeiling(){
         return this.y <= 0;
@@ -106,5 +136,21 @@ export class Player {
         this.currentState = this.states[state];
         this.game.speed = this.game.maxSpeed * speed;
         this.currentState.enter();
+    }
+    checkCollision(){
+        let playerRadius = this.width * 0.5;
+        this.game.enemies.forEach(enemy => {
+            let enemyRadius = enemy.width * 0.5;
+            if (enemy.enemyType === "Beetle"){
+                
+            }
+            // the vy value makes the hitboxes overlap a bit when there is a collision vertically (player landing on enemy head)
+            const dx = (enemy.x + enemyRadius) - (this.x + playerRadius);
+            const dy = (enemy.y + enemyRadius) - (this.y + playerRadius);
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            if (distance < (enemyRadius) + (playerRadius + this.maxSpeed)){
+                this.game.gameOver = true;
+            }
+        });
     }
 }
