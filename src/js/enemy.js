@@ -47,18 +47,16 @@ class Enemy {
         if (this.x + this.width < 0) this.markedForDeletion = true;
     }
     draw(ctx){
-        let radius = this.width * 0.5;
-
         if (this.game.debugMode){
             ctx.strokeStyle = 'black';
             ctx.beginPath();
-            ctx.arc(this.x + radius, this.y + this.height * 0.5, radius, 
+            ctx.arc(this.x + this.hitboxOffsetX + this.enemyRadius, this.y + + this.hitboxOffsetY + this.height * 0.5, this.enemyRadius * this.enemyRadiusModifier, 
                 0, Math.PI * 2);
             ctx.stroke();
 
             ctx.strokeStyle = 'blue';
             ctx.beginPath();
-            ctx.arc(this.x, this.y, radius, 
+            ctx.arc(this.x, this.y, this.enemyRadius, 
                 0, Math.PI * 2);
             ctx.stroke();
 
@@ -73,18 +71,26 @@ class Enemy {
 export class Beetle extends Enemy {
     constructor(game){
         super();
-        this.enemyType = "Beetle";
         this.game = game;
+        this.enemyType = "Beetle";
+        // movement and position properties
         this.width = 143;
         this.height = 125;
         this.x = this.game.width;
         this.y = this.game.height - this.height;
         this.image = document.getElementById('beetle');
+        // speed properties
         this.speedX = 0;
         this.speedY = 0;
         this.maxSpeedX = 5;
+        // spritesheet frame properties
         this.maxFrame = 27;
         this.totalFrameX = 0;
         this.totalFrameY = 2;
+        // hitbox properties
+        this.enemyRadius = this.width * 0.5;
+        this.enemyRadiusModifier = 0.45;
+        this.hitboxOffsetX = 0;
+        this.hitboxOffsetY = 25;
     }
 }

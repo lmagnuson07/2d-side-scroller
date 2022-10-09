@@ -14,7 +14,7 @@ window.addEventListener('load', function(){
     canvas.width = 1400;
     canvas.height = 720;
     
-    // implements the full screen functionality 
+    // implements the fullscreen functionality 
     // const fullScreenBtn = document.getElementById('fullScreenBtn');
     // const toggleFullScreen = function(){
     //     if (!document.fullScreenElement){
@@ -43,7 +43,7 @@ window.addEventListener('load', function(){
             this.enemyInterval = 1000;
             this.player.currentState = this.player.states[0];
             this.player.currentState.enter();
-            this.debugMode = true;
+            this.debugMode = false;
             this.gameOver = false;
         }
         update(deltaTime){

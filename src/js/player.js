@@ -143,15 +143,11 @@ export class Player {
     }
     checkCollision(){
         this.game.enemies.forEach(enemy => {
-            let enemyRadius = enemy.width * 0.5;
-            if (enemy.enemyType === "Beetle"){
-                
-            }
             // the vy value makes the hitboxes overlap a bit when there is a collision vertically (player landing on enemy head)
-            const dx = (enemy.x + enemyRadius) - (this.x + this.hitboxOffsetX + this.playerRadius);
-            const dy = (enemy.y + enemyRadius) - (this.y + this.hitboxOffsetY + this.playerRadius);
+            const dx = (enemy.x + enemy.hitboxOffsetX + enemy.enemyRadius) - (this.x + this.hitboxOffsetX + this.playerRadius);
+            const dy = (enemy.y + enemy.hitboxOffsetY + enemy.enemyRadius) - (this.y + this.hitboxOffsetY + this.playerRadius);
             const distance = Math.sqrt(dx * dx + dy * dy);
-            if (distance < enemyRadius + (this.playerRadius * this.playerRadiusModifier)){
+            if (distance < (enemy.enemyRadius * enemy.enemyRadiusModifier) + (this.playerRadius * this.playerRadiusModifier)){
                 this.game.gameOver = true;
             }
         });
