@@ -73,8 +73,10 @@ export class Player {
         }
 
         // horizontal movement inputs
-        if (inputKeys.includes('d')) this.speed = this.maxSpeed;
-        else if (inputKeys.includes('a')) this.speed = -this.maxSpeed;
+        // The currentstate check fixes a bug that was moving the character when "a", "d" and "s" were pressed simultaneously
+        //   The currentstate check works because of the playerStates bugfix (when "a" and "d" are pressed sumultaneously)
+        if (inputKeys.includes('d') && this.currentState !== this.states[8]) this.speed = this.maxSpeed; 
+        else if (inputKeys.includes('a') && this.currentState !== this.states[8]) this.speed = -this.maxSpeed;
         else this.speed = 0;
 
         // horizontal boundries

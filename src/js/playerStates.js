@@ -90,7 +90,6 @@ export class RunningRight extends State {
     }
     handleInput(inputKeys){
         if (!(inputKeys.includes('a') && inputKeys.includes('d'))){ // fixes a bug that was swapping right and left states rapidly 
-            this.game.player.setState(states.RUNNING_RIGHT, 1);
             if (inputKeys.includes('a')){
                 this.game.player.setState(states.RUNNING_LEFT, 0);
             } else if (inputKeys.includes(' ')){
@@ -284,14 +283,18 @@ export class DodgingRight extends State {
         this.game.player.frameY = 7;
     }
     handleInput(inputKeys){
-        if (inputKeys.length === 0){
-            this.game.player.setState(states.IDLE_RIGHT, 0);
-        } else if (inputKeys.includes('d') && !inputKeys.includes('s')){
-            this.game.player.setState(states.RUNNING_RIGHT, 1);
-        } else if (inputKeys.includes('a') && !inputKeys.includes('s')){
-            this.game.player.setState(states.RUNNING_LEFT, 0);
-        } else {
-            this.game.player.speed = 0;
+        if (!(inputKeys.includes('a') && inputKeys.includes('d'))){
+            if (inputKeys.length === 0){
+                this.game.player.setState(states.IDLE_RIGHT, 0);
+            } else if (inputKeys.includes('d') && !inputKeys.includes('s')){
+                this.game.player.setState(states.RUNNING_RIGHT, 1);
+            } else if (inputKeys.includes('a') && !inputKeys.includes('s')){
+                this.game.player.setState(states.RUNNING_LEFT, 0);
+            } else if (inputKeys.includes('a') && inputKeys.includes('s')){
+                this.game.player.setState(states.DODGING_LEFT, 0);
+            } else {
+                this.game.player.speed = 0;
+            }
         }
     }
 }
@@ -315,6 +318,8 @@ export class DodgingLeft extends State {
             this.game.player.setState(states.RUNNING_LEFT, 0);
         } else if (inputKeys.includes('d') && !inputKeys.includes('s')){
             this.game.player.setState(states.RUNNING_RIGHT, 1);
+        } else if (inputKeys.includes('d') && inputKeys.includes('s')){
+            this.game.player.setState(states.DODGING_RIGHT, 0);
         } else {
             this.game.player.speed = 0;
         }
