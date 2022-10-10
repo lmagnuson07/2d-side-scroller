@@ -154,6 +154,8 @@ export class Player {
             const distance = Math.sqrt(dx * dx + dy * dy);
             if (distance < (enemy.enemyRadius * enemy.enemyRadiusModifier) + (this.playerRadius * this.playerRadiusModifier)){
                 this.game.gameOver = true;
+                enemy.markedForDeletion = true;
+                this.game.score++;
             }
         });
     }

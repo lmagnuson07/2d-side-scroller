@@ -2,6 +2,7 @@ import { Player } from './player';
 import { InputHandler } from './input';
 import { Beetle } from './enemy';
 import { Background } from './background';
+import { UI } from './ui';
 // - vite build --emptyOutDir
 
 window.addEventListener('load', function(){
@@ -44,6 +45,7 @@ window.addEventListener('load', function(){
             this.player = new Player(this);
             this.input = new InputHandler(this);
             this.background = new Background(this);
+            this.ui = new UI(this);
             // object arrays
             this.enemies = [];
             // enemy timer properties
@@ -55,8 +57,13 @@ window.addEventListener('load', function(){
             // game function/settings properties
             this.debugMode = false;
             this.gameOver = false;
+            this.time = 0;
+            // ui properties
+            this.fontColor = '#ddddde';
+            this.score = 0;
         }
         update(deltaTime){
+            this.time += deltaTime;
             // Update methods
             this.background.update(deltaTime);
             this.player.update(this.input.keys, deltaTime);
@@ -80,6 +87,8 @@ window.addEventListener('load', function(){
             this.enemies.forEach(enemy => {
                 enemy.draw(ctx);
             });
+
+            this.ui.draw(ctx);
         }
         addEnemy(){
             if (Math.random() < 0.5) this.enemies.push(new Beetle(this));
