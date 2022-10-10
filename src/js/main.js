@@ -16,18 +16,18 @@ window.addEventListener('load', function(){
     canvas.height = 768;
     
     // implements the fullscreen functionality 
-    // const fullScreenBtn = document.getElementById('fullScreenBtn');
-    // const toggleFullScreen = function(){
-    //     if (!document.fullScreenElement){
-    //         canvas.requestFullscreen()
-    //         .catch(err => {
-    //             alert(`Error, can't enable full-screen mode: ${err.message}`);
-    //         })
-    //     } else {
-    //         document.exitFullscreen();
-    //     }
-    // }
-    // fullScreenBtn.addEventListener('click', toggleFullScreen);
+    const fullScreenBtn = document.getElementById('fullScreenBtn');
+    const toggleFullScreen = function(){
+        if (!document.fullScreenElement){
+            canvas.requestFullscreen()
+            .catch(err => {
+                alert(`Error, can't enable full-screen mode: ${err.message}`);
+            })
+        } else {
+            document.exitFullscreen();
+        }
+    }
+    fullScreenBtn.addEventListener('click', toggleFullScreen);
 
     // Game class ////////////////////////////////
     class Game {
@@ -97,7 +97,8 @@ window.addEventListener('load', function(){
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         game.update(deltaTime);
         game.draw(ctx);
-        if (!game.gameOver) requestAnimationFrame(animate);
+        // if (!game.gameOver) requestAnimationFrame(animate);
+        requestAnimationFrame(animate);
     }
     animate(0);
 });
