@@ -464,6 +464,8 @@ export class RollingLeft extends State {
                     this.game.player.setState(states.ROLLING_RIGHT, 3);
                 } else if (inputKeys.includes('a')){
                     this.game.player.speed = -this.game.player.maxSpeed * 2.5;
+                } else if (!inputKeys.includes('a')){
+                    this.game.player.setState(states.ROLLING_RIGHT, 3);
                 }
             }
         } else {

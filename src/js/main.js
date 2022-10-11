@@ -49,6 +49,7 @@ window.addEventListener('load', function(){
             this.ui = new UI(this);
             // object arrays
             this.enemies = [];
+            this.floatingMessages = [];
             // enemy timer properties
             this.enemyTimer = 0;
             this.enemyInterval = 1000;
@@ -74,10 +75,9 @@ window.addEventListener('load', function(){
             // Update methods
             this.background.update(deltaTime);
             this.player.update(this.input.keys, deltaTime);
-            this.enemies.forEach(enemy => {
-                enemy.update(deltaTime);
+            [...this.enemies, ...this.floatingMessages].forEach(object => {
+                object.update(deltaTime);
             });
-
             // handle enemies 
             if (this.enemyTimer > this.enemyInterval){
                 this.addEnemy();
@@ -85,16 +85,16 @@ window.addEventListener('load', function(){
             } else {
                 this.enemyTimer += deltaTime;
             }
-            console.log(this.player.currentState)
+            // array filtering
             this.enemies = this.enemies.filter(enemy => !enemy.markedForDeletion);
+            this.floatingMessages = this.floatingMessages.filter(messages => !messages.markedForDeletion)
         }
         draw(ctx){
             this.background.draw(ctx);
             this.player.draw(ctx);
-            this.enemies.forEach(enemy => {
-                enemy.draw(ctx);
-            });
-
+            [...this.enemies, ...this.floatingMessages].forEach(object => {
+                object.draw(ctx);
+            })
             this.ui.draw(ctx);
         }
         addEnemy(){

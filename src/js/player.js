@@ -9,6 +9,7 @@ import {
     RollingRight, RollingLeft,
     DivingRight, DivingLeft
 } from './playerStates';
+import { FloatingMessage } from './floatingMessages';
 
 export class Player {
     constructor(game){
@@ -181,15 +182,19 @@ export class Player {
             const distance = Math.sqrt(dx * dx + dy * dy);
             if (distance < (enemy.enemyRadius * enemy.enemyRadiusModifier) + (this.playerRadius * this.playerRadiusModifier)){
                 enemy.markedForDeletion = true;
+
                 if (this.currentState === this.states[states.SLIDING_LEFT] ||
                     this.currentState === this.states[states.SLIDING_RIGHT]){
                     this.game.score++;
+                    this.game.floatingMessages.push(new FloatingMessage('+1', enemy.x, enemy.y, 150, 50));
                 } else if (this.currentState === this.states[states.DIVING_LEFT] ||
                     this.currentState === this.states[states.DIVING_RIGHT]) {
                     this.game.score += 5;
+                    this.game.floatingMessages.push(new FloatingMessage('+5', enemy.x, enemy.y, 150, 50));
                 } else if (this.currentState === this.states[states.ROLLING_LEFT] ||
                     this.currentState === this.states[states.ROLLING_RIGHT]) {
                     this.game.score += 2;
+                    this.game.floatingMessages.push(new FloatingMessage('+2', enemy.x, enemy.y, 150, 50));
                 } else {
                     this.game.score--;
                     this.game.lives--;
