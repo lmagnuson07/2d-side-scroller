@@ -70,6 +70,7 @@ window.addEventListener('load', function(){
         }
         update(deltaTime){
             // timer properties
+            // console.log(this.player.currentState)
             this.time += deltaTime;
             if (this.time > this.maxTime) this.gameWon = true;
             // Update methods

@@ -6,7 +6,9 @@ export const states = {
     DODGING_RIGHT: 8, DODGING_LEFT: 9, 
     SLIDING_RIGHT: 10, SLIDING_LEFT: 11,
     ROLLING_RIGHT: 12, ROLLING_LEFT: 13,
-    DIVING_RIGHT: 14, DIVING_LEFT: 15
+    DIVING_RIGHT: 14, DIVING_LEFT: 15,
+    HIT_RIGHT: 16, HIT_LEFT: 17,
+    DIZZY_RIGHT: 18, DIZZY_LEFT:19
 }
 
 class State {
@@ -530,6 +532,90 @@ export class DivingLeft extends State {
             } else {
                 this.game.player.setState(states.IDLE_LEFT, 0);
             }
+        }
+    }
+}
+
+export class HitRight extends State {
+    constructor(game){
+        super('HIT RIGHT', game);
+    }
+    enter(){
+        // spritesheet frame data
+        this.game.player.image = this.game.player.imageRight;
+        this.game.player.frameX = 0; 
+        this.game.player.totalFrameX = 0;
+        this.game.player.maxFrame = 15; 
+        this.game.player.frameY = 10;
+    }
+    handleInput(inputKeys){
+        if (this.game.player.totalFrameX >= this.game.player.maxFrame && this.game.player.onGround()){
+            this.game.player.setState(states.IDLE_RIGHT, 0);
+        } else if (this.game.player.totalFrameX >= this.game.player.maxFrame && !this.game.player.onGround()){
+            this.game.player.setState(states.FALLING_RIGHT, 0);
+        }
+    }
+}
+
+export class HitLeft extends State {
+    constructor(game){
+        super('HIT LEFT', game);
+    }
+    enter(){
+        // spritesheet frame data
+        this.game.player.image = this.game.player.imageLeft;
+        this.game.player.frameX = 0; 
+        this.game.player.totalFrameX = 0;
+        this.game.player.maxFrame = 15; 
+        this.game.player.frameY = 10;
+    }
+    handleInput(inputKeys){
+        if (this.game.player.totalFrameX >= this.game.player.maxFrame && this.game.player.onGround()){
+            this.game.player.setState(states.IDLE_LEFT, 0);
+        } else if (this.game.player.totalFrameX >= this.game.player.maxFrame && !this.game.player.onGround()){
+            this.game.player.setState(states.FALLING_LEFT, 0);
+        }
+    }
+}
+
+export class DizzyRight extends State {
+    constructor(game){
+        super('DIZZY RIGHT', game);
+    }
+    enter(){
+        // spritesheet frame data
+        this.game.player.image = this.game.player.imageRight;
+        this.game.player.frameX = 0; 
+        this.game.player.totalFrameX = 0;
+        this.game.player.maxFrame = 20; 
+        this.game.player.frameY = 12;
+    }
+    handleInput(inputKeys){
+        if (this.game.player.totalFrameX >= this.game.player.maxFrame && this.game.player.onGround()){
+            this.game.player.setState(states.IDLE_RIGHT, 0);
+        } else if (this.game.player.totalFrameX >= this.game.player.maxFrame && !this.game.player.onGround()){
+            this.game.player.setState(states.FALLING_RIGHT, 0);
+        }
+    }
+}
+
+export class DizzyLeft extends State {
+    constructor(game){
+        super('DIZZY LEFT', game);
+    }
+    enter(){
+        // spritesheet frame data
+        this.game.player.image = this.game.player.imageLeft;
+        this.game.player.frameX = 0; 
+        this.game.player.totalFrameX = 0;
+        this.game.player.maxFrame = 20; 
+        this.game.player.frameY = 12;
+    }
+    handleInput(inputKeys){
+        if (this.game.player.totalFrameX >= this.game.player.maxFrame && this.game.player.onGround()){
+            this.game.player.setState(states.IDLE_LEFT, 0);
+        } else if (this.game.player.totalFrameX >= this.game.player.maxFrame && !this.game.player.onGround()){
+            this.game.player.setState(states.FALLING_LEFT, 0);
         }
     }
 }

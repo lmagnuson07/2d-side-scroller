@@ -7,7 +7,9 @@ import {
     DodgingRight, DodgingLeft,
     SlidingRight, SlidingLeft, 
     RollingRight, RollingLeft,
-    DivingRight, DivingLeft
+    DivingRight, DivingLeft,
+    HitRight, HitLeft,
+    DizzyRight, DizzyLeft
 } from './playerStates';
 import { FloatingMessage } from './floatingMessages';
 
@@ -56,7 +58,9 @@ export class Player {
             new DodgingRight(this.game), new DodgingLeft(this.game),
             new SlidingRight(this.game), new SlidingLeft(this.game),
             new RollingRight(this.game), new RollingLeft(this.game),
-            new DivingRight(this.game), new DivingLeft(this.game)
+            new DivingRight(this.game), new DivingLeft(this.game),
+            new HitRight(this.game), new HitLeft(this.game),
+            new DizzyRight(this.game), new DizzyLeft(this.game)
         ];
         this.currentState = null;
     }
@@ -91,7 +95,11 @@ export class Player {
             this.currentState !== this.states[states.SLIDING_LEFT] &&
             this.currentState !== this.states[states.SLIDING_RIGHT] &&
             this.currentState !== this.states[states.DIVING_LEFT] &&
-            this.currentState !== this.states[states.DIVING_RIGHT])
+            this.currentState !== this.states[states.DIVING_RIGHT] &&
+            this.currentState !== this.states[states.HIT_LEFT] &&
+            this.currentState !== this.states[states.HIT_RIGHT] &&
+            this.currentState !== this.states[states.DIZZY_LEFT] &&
+            this.currentState !== this.states[states.DIZZY_RIGHT])
         {
             this.speed = this.maxSpeed;
         }  
@@ -101,7 +109,11 @@ export class Player {
             this.currentState !== this.states[states.SLIDING_LEFT] &&
             this.currentState !== this.states[states.SLIDING_RIGHT] &&
             this.currentState !== this.states[states.DIVING_LEFT] &&
-            this.currentState !== this.states[states.DIVING_RIGHT])
+            this.currentState !== this.states[states.DIVING_RIGHT] &&
+            this.currentState !== this.states[states.HIT_LEFT] &&
+            this.currentState !== this.states[states.HIT_RIGHT] &&
+            this.currentState !== this.states[states.DIZZY_LEFT] &&
+            this.currentState !== this.states[states.DIZZY_RIGHT])
         {
             this.speed = -this.maxSpeed;
         } 
@@ -159,9 +171,16 @@ export class Player {
             ctx.strokeStyle = 'white';
             ctx.strokeRect(this.x, this.y, this.width, this.height);
         } 
-
-        ctx.drawImage(this.image, this.frameX * this.width, this.frameY * this.height, this.width, this.height,
-            this.x, this.y, this.width, this.height);
+        if (this.currentState === this.states[states.HIT_RIGHT]){
+            ctx.drawImage(this.image, this.frameX * this.width, this.frameY * this.height, this.width, this.height,
+                this.x - 11, this.y, this.width, this.height);
+        } else if (this.currentState === this.states[states.HIT_LEFT]){
+            ctx.drawImage(this.image, this.frameX * this.width, this.frameY * this.height, this.width, this.height,
+                this.x + 11, this.y, this.width, this.height);
+        } else {
+            ctx.drawImage(this.image, this.frameX * this.width, this.frameY * this.height, this.width, this.height,
+                this.x, this.y, this.width, this.height);
+        }
     }
     onGround(){
         return this.y >= this.game.height - this.height - this.game.groundMargin;
@@ -182,7 +201,6 @@ export class Player {
             const distance = Math.sqrt(dx * dx + dy * dy);
             if (distance < (enemy.enemyRadius * enemy.enemyRadiusModifier) + (this.playerRadius * this.playerRadiusModifier)){
                 enemy.markedForDeletion = true;
-
                 if (this.currentState === this.states[states.SLIDING_LEFT] ||
                     this.currentState === this.states[states.SLIDING_RIGHT]){
                     this.game.score++;
@@ -196,10 +214,40 @@ export class Player {
                     this.game.score += 2;
                     this.game.floatingMessages.push(new FloatingMessage('+2', enemy.x, enemy.y, 150, 50));
                 } else {
-                    this.game.score--;
+                    if (this.game.lives > this.game.totalLives * 0.5){
+                        if (this.currentState === this.states[states.RUNNING_RIGHT] ||
+                            this.currentState === this.states[states.IDLE_RIGHT] ||
+                            this.currentState === this.states[states.JUMPING_RIGHT] ||
+                            this.currentState === this.states[states.FALLING_RIGHT])
+                        {
+                            this.setState(states.HIT_RIGHT, 0);
+                        } else if (this.currentState === this.states[states.RUNNING_LEFT] ||
+                            this.currentState === this.states[states.IDLE_LEFT] ||
+                            this.currentState === this.states[states.JUMPING_LEFT] ||
+                            this.currentState === this.states[states.FALLING_LEFT])
+                        {
+                            this.setState(states.HIT_LEFT, 0)
+                        }
+                    } else {
+                        if (this.currentState === this.states[states.RUNNING_RIGHT] ||
+                            this.currentState === this.states[states.IDLE_RIGHT] ||
+                            this.currentState === this.states[states.JUMPING_RIGHT] ||
+                            this.currentState === this.states[states.FALLING_RIGHT])
+                        {
+                            this.setState(states.DIZZY_RIGHT, 0);
+                        } else if (this.currentState === this.states[states.RUNNING_LEFT] ||
+                            this.currentState === this.states[states.IDLE_LEFT] ||
+                            this.currentState === this.states[states.JUMPING_LEFT] ||
+                            this.currentState === this.states[states.FALLING_LEFT])
+                        {
+                            this.setState(states.DIZZY_LEFT, 0)
+                        }
+                    }
+                    this.game.score -= 5;
                     this.game.lives--;
+                    this.game.floatingMessages.push(new FloatingMessage('-5', enemy.x, enemy.y, 150, 50));
+                    if (this.game.lives <= 0) this.game.gameOver = true;
                 }
-                if (this.game.lives <= 0) this.game.gameOver = true;
             }
         });
     }
