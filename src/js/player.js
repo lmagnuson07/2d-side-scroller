@@ -12,6 +12,7 @@ import {
     DizzyRight, DizzyLeft
 } from './playerStates';
 import { FloatingMessage } from './floatingMessages';
+import { CollisionAnimation } from './collisionAnimation';
 
 export class Player {
     constructor(game){
@@ -201,6 +202,7 @@ export class Player {
             const distance = Math.sqrt(dx * dx + dy * dy);
             if (distance < (enemy.enemyRadius * enemy.enemyRadiusModifier) + (this.playerRadius * this.playerRadiusModifier)){
                 enemy.markedForDeletion = true;
+                this.game.collisions.push(new CollisionAnimation(this.game, enemy.x + enemy.width * 0.5, enemy.y + enemy.height * 0.5));
                 if (this.currentState === this.states[states.SLIDING_LEFT] ||
                     this.currentState === this.states[states.SLIDING_RIGHT]){
                     this.game.score++;

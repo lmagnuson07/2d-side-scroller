@@ -50,6 +50,7 @@ window.addEventListener('load', function(){
             // object arrays
             this.enemies = [];
             this.floatingMessages = [];
+            this.collisions = [];
             // enemy timer properties
             this.enemyTimer = 0;
             this.enemyInterval = 1000;
@@ -76,7 +77,7 @@ window.addEventListener('load', function(){
             // Update methods
             this.background.update(deltaTime);
             this.player.update(this.input.keys, deltaTime);
-            [...this.enemies, ...this.floatingMessages].forEach(object => {
+            [...this.enemies, ...this.floatingMessages, ...this.collisions].forEach(object => {
                 object.update(deltaTime);
             });
             // handle enemies 
@@ -89,11 +90,12 @@ window.addEventListener('load', function(){
             // array filtering
             this.enemies = this.enemies.filter(enemy => !enemy.markedForDeletion);
             this.floatingMessages = this.floatingMessages.filter(messages => !messages.markedForDeletion)
+            this.collisions = this.collisions.filter(collision => !collision.markedForDeletion);
         }
         draw(ctx){
             this.background.draw(ctx);
             this.player.draw(ctx);
-            [...this.enemies, ...this.floatingMessages].forEach(object => {
+            [...this.enemies, ...this.floatingMessages, ...this.collisions].forEach(object => {
                 object.draw(ctx);
             })
             this.ui.draw(ctx);
