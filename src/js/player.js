@@ -1,9 +1,11 @@
 import {
+    states,
     IdleRight, IdleLeft,
     RunningRight, RunningLeft,
     JumpingRight, JumpingLeft, 
     FallingRight, FallingLeft,
-    DodgingRight, DodgingLeft
+    DodgingRight, DodgingLeft,
+    SlidingRight, SlidingLeft
 } from './playerStates';
 
 export class Player {
@@ -46,7 +48,8 @@ export class Player {
             new RunningRight(this.game), new RunningLeft(this.game),
             new JumpingRight(this.game), new JumpingLeft(this.game), 
             new FallingRight(this.game), new FallingLeft(this.game),
-            new DodgingRight(this.game), new DodgingLeft(this.game)
+            new DodgingRight(this.game), new DodgingLeft(this.game),
+            new SlidingRight(this.game), new SlidingLeft(this.game)
         ];
         this.currentState = null;
     }
@@ -75,8 +78,22 @@ export class Player {
         // horizontal movement inputs
         // The currentstate check fixes a bug that was moving the character when "a", "d" and "s" were pressed simultaneously
         //   The currentstate check works because of the playerStates bugfix (when "a" and "d" are pressed sumultaneously)
-        if (inputKeys.includes('d') && this.currentState !== this.states[8]) this.speed = this.maxSpeed; 
-        else if (inputKeys.includes('a') && this.currentState !== this.states[8]) this.speed = -this.maxSpeed;
+        if (inputKeys.includes('d') && 
+            this.currentState !== this.states[states.DODGING_LEFT] && 
+            this.currentState !== this.states[states.DODGING_RIGHT] && 
+            this.currentState !== this.states[states.SLIDING_LEFT] &&
+            this.currentState !== this.states[states.SLIDING_RIGHT])
+        {
+            this.speed = this.maxSpeed;
+        }  
+        else if (inputKeys.includes('a') && 
+            this.currentState !== this.states[states.DODGING_LEFT] && 
+            this.currentState !== this.states[states.DODGING_RIGHT] && 
+            this.currentState !== this.states[states.SLIDING_LEFT] &&
+            this.currentState !== this.states[states.SLIDING_RIGHT])
+        {
+            this.speed = -this.maxSpeed;
+        } 
         else this.speed = 0;
 
         // horizontal boundries
@@ -154,8 +171,13 @@ export class Player {
             const distance = Math.sqrt(dx * dx + dy * dy);
             if (distance < (enemy.enemyRadius * enemy.enemyRadiusModifier) + (this.playerRadius * this.playerRadiusModifier)){
                 enemy.markedForDeletion = true;
-                this.game.score--;
-                this.game.lives--;
+                if (this.currentState === this.states[states.SLIDING_LEFT] ||
+                    this.currentState === this.states[states.SLIDING_RIGHT]){
+                    this.game.score++;
+                } else {
+                    this.game.score--;
+                    this.game.lives--;
+                }
                 if (this.game.lives <= 0) this.game.gameOver = true;
             }
         });

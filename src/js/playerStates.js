@@ -1,4 +1,4 @@
-const states = {
+export const states = {
     IDLE_RIGHT: 0,
     IDLE_LEFT: 1,
     RUNNING_RIGHT: 2,
@@ -8,7 +8,9 @@ const states = {
     FALLING_RIGHT: 6, 
     FALLING_LEFT: 7, 
     DODGING_RIGHT: 8,
-    DODGING_LEFT: 9
+    DODGING_LEFT: 9, 
+    SLIDING_RIGHT: 10,
+    SLIDING_LEFT: 11,
 }
 
 class State {
@@ -43,6 +45,8 @@ export class IdleRight extends State {
             }
         } else if (inputKeys.includes('s')){
             this.game.player.setState(states.DODGING_RIGHT, 0);
+        } else if (inputKeys.includes('w')){
+            this.game.player.setState(states.SLIDING_RIGHT, 3);
         }
     }
 }
@@ -72,6 +76,8 @@ export class IdleLeft extends State {
             }
         } else if (inputKeys.includes('s')){
             this.game.player.setState(states.DODGING_LEFT, 0);
+        } else if (inputKeys.includes('w')){
+            this.game.player.setState(states.SLIDING_LEFT, 0);
         }
     }
 }
@@ -96,9 +102,11 @@ export class RunningRight extends State {
                 this.game.player.setState(states.JUMPING_RIGHT, 1);
             } else if (inputKeys.includes('s')){
                 this.game.player.setState(states.DODGING_RIGHT, 0);
+            } else if (inputKeys.includes('w')){
+                this.game.player.setState(states.SLIDING_RIGHT, 3);
             } else if (inputKeys.length === 0){
                 this.game.player.setState(states.IDLE_RIGHT, 0);
-            }
+            } 
         } else { // everything in this else is to allow character to jump, dodge if "a" and "d" are pressed simultaneously
             if (inputKeys.includes(' ')){
                 this.game.player.setState(states.JUMPING_RIGHT, 1);
@@ -128,6 +136,8 @@ export class RunningLeft extends State {
             this.game.player.setState(states.JUMPING_LEFT, 0);
         } else if (inputKeys.includes('s')){
             this.game.player.setState(states.DODGING_LEFT, 0);
+        } else if (inputKeys.includes('w')){
+            this.game.player.setState(states.SLIDING_LEFT, 0);
         } else if (inputKeys.length === 0){
             this.game.player.setState(states.IDLE_LEFT, 0);
         }
@@ -322,6 +332,62 @@ export class DodgingLeft extends State {
             this.game.player.setState(states.DODGING_RIGHT, 0);
         } else {
             this.game.player.speed = 0;
+        }
+    }
+}
+
+export class SlidingRight extends State {
+    constructor(game){
+        super('SLIDING RIGHT', game);
+    }
+    enter(){
+        // spritesheet frame data
+        this.game.player.image = this.game.player.imageRight;
+        this.game.player.frameX = 0; 
+        this.game.player.totalFrameX = 0;
+        this.game.player.maxFrame = 8; 
+        this.game.player.frameY = 6;
+    }
+    handleInput(inputKeys){
+        this.game.player.speed = 15;
+        if (!inputKeys.includes('w')){
+            if (inputKeys.includes('d')){
+                this.game.player.setState(states.RUNNING_RIGHT, 1);
+            } else if (inputKeys.includes('a')){
+                this.game.player.setState(states.RUNNING_LEFT, 0);
+            } else if (inputKeys.length === 0){
+                this.game.player.setState(states.IDLE_RIGHT, 0);
+            }
+        } else if (this.game.player.frameX === this.game.player.maxFrame){
+            this.game.player.setState(states.SLIDING_RIGHT, 3);
+        }
+    }
+}
+
+export class SlidingLeft extends State {
+    constructor(game){
+        super('SLIDING LEFT', game);
+    }
+    enter(){
+        // spritesheet frame data
+        this.game.player.image = this.game.player.imageLeft;
+        this.game.player.frameX = 0; 
+        this.game.player.totalFrameX = 0;
+        this.game.player.maxFrame = 8; 
+        this.game.player.frameY = 6;
+    }
+    handleInput(inputKeys){
+        this.game.player.speed = -25;
+        if (!inputKeys.includes('w')){
+            if (inputKeys.includes('d')){
+                this.game.player.setState(states.RUNNING_RIGHT, 1);
+            } else if (inputKeys.includes('a')){
+                this.game.player.setState(states.RUNNING_LEFT, 0);
+            } else if (inputKeys.length === 0){
+                this.game.player.setState(states.IDLE_RIGHT, 0);
+            }
+        } else if (this.game.player.frameX === this.game.player.maxFrame){
+            this.game.player.setState(states.SLIDING_LEFT, 0);
         }
     }
 }

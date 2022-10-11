@@ -1,8 +1,8 @@
 export class UI {
     constructor(game){
         this.game = game;
-        this.fontSize = 30;
-        this.fontFamily = 'Arial';
+        this.fontSize = 30; 
+        this.fontFamily = 'Lakki Reddy, cursive';
         this.heartEmpty = document.getElementById('heartEmpty');
         this.heartFull = document.getElementById('heartFull');
         this.heartHalf = document.getElementById('heartHalf');
@@ -63,7 +63,6 @@ export class UI {
             ctx.font = `${this.fontSize}px ${this.fontFamily}`;
             ctx.fillText(`You survived with a score of ${this.game.score}!`, this.game.width * 0.5, this.game.height * 0.5 + 20);
         }
-        
         ctx.restore();
     }
 }

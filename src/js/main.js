@@ -85,7 +85,7 @@ window.addEventListener('load', function(){
             } else {
                 this.enemyTimer += deltaTime;
             }
-            //console.log(this.player.currentState)
+            console.log(this.player.currentState)
             this.enemies = this.enemies.filter(enemy => !enemy.markedForDeletion);
         }
         draw(ctx){

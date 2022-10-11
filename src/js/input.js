@@ -3,8 +3,9 @@ export class InputHandler {
         this.game = game;
         this.keys = [];
         window.addEventListener('keydown', e => {
-            if ((e.key === 'a' ||
-                e.key === 'd' ||
+            console.log(e)
+            if ((e.key === 'a' || e.key === 'f' || 
+                e.key === 'd' || e.key === 'w' ||
                 e.key === ' ' ||
                 e.key === 's') && 
                 this.keys.indexOf(e.key) === -1)
@@ -15,8 +16,8 @@ export class InputHandler {
             }
         });
         window.addEventListener('keyup', e => {
-            if (e.key === 'a' ||
-                e.key === 'd' ||
+            if (e.key === 'a' || e.key === 'f' ||
+                e.key === 'd' || e.key === 'w' ||
                 e.key === ' ' || 
                 e.key === 's')
             {
