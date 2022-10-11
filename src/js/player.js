@@ -5,7 +5,9 @@ import {
     JumpingRight, JumpingLeft, 
     FallingRight, FallingLeft,
     DodgingRight, DodgingLeft,
-    SlidingRight, SlidingLeft
+    SlidingRight, SlidingLeft, 
+    RollingRight, RollingLeft,
+    DivingRight, DivingLeft
 } from './playerStates';
 
 export class Player {
@@ -19,6 +21,8 @@ export class Player {
         this.vy = 0;
         this.weight = 1;
         this.speed = 0;
+        this.jumpSpeed = -32;
+        this.diveSpeed = 54;
         this.maxSpeed = 10;
         // image properties
         this.imageRight = document.getElementById('player');
@@ -49,7 +53,9 @@ export class Player {
             new JumpingRight(this.game), new JumpingLeft(this.game), 
             new FallingRight(this.game), new FallingLeft(this.game),
             new DodgingRight(this.game), new DodgingLeft(this.game),
-            new SlidingRight(this.game), new SlidingLeft(this.game)
+            new SlidingRight(this.game), new SlidingLeft(this.game),
+            new RollingRight(this.game), new RollingLeft(this.game),
+            new DivingRight(this.game), new DivingLeft(this.game)
         ];
         this.currentState = null;
     }
@@ -82,7 +88,9 @@ export class Player {
             this.currentState !== this.states[states.DODGING_LEFT] && 
             this.currentState !== this.states[states.DODGING_RIGHT] && 
             this.currentState !== this.states[states.SLIDING_LEFT] &&
-            this.currentState !== this.states[states.SLIDING_RIGHT])
+            this.currentState !== this.states[states.SLIDING_RIGHT] &&
+            this.currentState !== this.states[states.DIVING_LEFT] &&
+            this.currentState !== this.states[states.DIVING_RIGHT])
         {
             this.speed = this.maxSpeed;
         }  
@@ -90,7 +98,9 @@ export class Player {
             this.currentState !== this.states[states.DODGING_LEFT] && 
             this.currentState !== this.states[states.DODGING_RIGHT] && 
             this.currentState !== this.states[states.SLIDING_LEFT] &&
-            this.currentState !== this.states[states.SLIDING_RIGHT])
+            this.currentState !== this.states[states.SLIDING_RIGHT] &&
+            this.currentState !== this.states[states.DIVING_LEFT] &&
+            this.currentState !== this.states[states.DIVING_RIGHT])
         {
             this.speed = -this.maxSpeed;
         } 
@@ -174,6 +184,12 @@ export class Player {
                 if (this.currentState === this.states[states.SLIDING_LEFT] ||
                     this.currentState === this.states[states.SLIDING_RIGHT]){
                     this.game.score++;
+                } else if (this.currentState === this.states[states.DIVING_LEFT] ||
+                    this.currentState === this.states[states.DIVING_RIGHT]) {
+                    this.game.score += 5;
+                } else if (this.currentState === this.states[states.ROLLING_LEFT] ||
+                    this.currentState === this.states[states.ROLLING_RIGHT]) {
+                    this.game.score += 2;
                 } else {
                     this.game.score--;
                     this.game.lives--;
