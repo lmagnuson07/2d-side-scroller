@@ -15,3 +15,10 @@ This will be my first attempt at coding a 2d game using vanilla JavaScript. I wi
 - State design pattern 
 - Responsive design
 - Full screen mode
+
+## Other Assets
+- Player (purchased @ [Bevouliin](https://bevouliin.com/)) - [Demon Kid](https://bevouliin.com/2d-game-asset-demon-kid-sprite/)
+- Enemies (purchased @ [Bevouliin](https://bevouliin.com/)) - [Shadow Monster Set](https://bevouliin.com/12-shadow-monsters-game-asset/)
+- Background (purchased @ [Bevouliin](https://bevouliin.com/)) - [Volcano Ring Background](https://bevouliin.com/volcano-ring-game-background/)
+- Font - [Google Fonts](https://fonts.google.com/specimen/Lakki+Reddy?query=lakki)
+- Hearts images - [depositphotos.com](https://depositphotos.com/426880318/stock-illustration-pixel-art-set-red-hearts.html)
