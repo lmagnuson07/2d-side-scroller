@@ -12,6 +12,7 @@ window.addEventListener('load', function(){
 
     // canvas setup
     const canvas = document.getElementById('canvas1');
+    canvas.style.display = 'block';
     const ctx = canvas.getContext('2d');
     canvas.width = 1400;
     canvas.height = 768;
@@ -57,13 +58,19 @@ window.addEventListener('load', function(){
             // game function/settings properties
             this.debugMode = false;
             this.gameOver = false;
+            this.gameWon = false;
             this.time = 0;
-            // ui properties
-            this.fontColor = '#ddddde';
+            this.maxTime = 30000;
             this.score = 0;
+            this.lives = 10;
+            this.totalLives = 10;
+            // ui properties
+            this.fontColor = '#fff';
         }
         update(deltaTime){
+            // timer properties
             this.time += deltaTime;
+            if (this.time > this.maxTime) this.gameWon = true;
             // Update methods
             this.background.update(deltaTime);
             this.player.update(this.input.keys, deltaTime);
@@ -94,8 +101,11 @@ window.addEventListener('load', function(){
             if (Math.random() < 0.5) this.enemies.push(new Beetle(this));
         }
     }
-
     const game = new Game(canvas.width, canvas.height);
+    // Fill the heart array here so that it is only filled once, instead of every frame 
+    for (let i = 0; i < game.totalLives * 0.5; i++){
+        game.ui.heartArray.push(game.ui.heartFull);
+    }
 
     // Animation loop ////////////////////////////
     let lastTime = 0;
@@ -106,8 +116,8 @@ window.addEventListener('load', function(){
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         game.update(deltaTime);
         game.draw(ctx);
-        // if (!game.gameOver) requestAnimationFrame(animate);
-        requestAnimationFrame(animate);
+        if (!game.gameOver && !game.gameWon) requestAnimationFrame(animate);
+        // requestAnimationFrame(animate);
     }
     animate(0);
 });

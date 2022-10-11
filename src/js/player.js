@@ -153,9 +153,10 @@ export class Player {
             const dy = (enemy.y + enemy.hitboxOffsetY + enemy.enemyRadius) - (this.y + this.hitboxOffsetY + this.playerRadius);
             const distance = Math.sqrt(dx * dx + dy * dy);
             if (distance < (enemy.enemyRadius * enemy.enemyRadiusModifier) + (this.playerRadius * this.playerRadiusModifier)){
-                this.game.gameOver = true;
                 enemy.markedForDeletion = true;
-                this.game.score++;
+                this.game.score--;
+                this.game.lives--;
+                if (this.game.lives <= 0) this.game.gameOver = true;
             }
         });
     }
