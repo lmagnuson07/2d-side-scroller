@@ -64,7 +64,7 @@ class Enemy {
             ctx.strokeRect(this.x, this.y, this.width, this.height);
         }
         ctx.drawImage(this.image, this.frameX * this.width, this.frameY * this.height, this.width, this.height,
-            this.x, this.y, this.width, this.height);
+            this.x, this.y, this.width * this.sizeModifier, this.height * this.sizeModifier);
     }
 }
 
@@ -77,6 +77,7 @@ export class Beetle extends Enemy {
         // movement and position properties
         this.width = 143;
         this.height = 125;
+        this.sizeModifier = Number((Math.random() * 0.05 + 0.96).toFixed(2));
         this.x = this.game.width;
         this.y = this.game.height - this.height - this.game.groundMargin - this.grondMarginModifier;
         this.image = document.getElementById('beetle');
@@ -93,5 +94,46 @@ export class Beetle extends Enemy {
         this.enemyRadiusModifier = 0.45;
         this.hitboxOffsetX = 0;
         this.hitboxOffsetY = 25;
+    }
+}
+
+export class Spirit extends Enemy {
+    constructor(game){
+        super();
+        this.game = game;
+        this.enemyType = "Spirit";
+        // movement and position properties
+        this.width = 143;
+        this.height = 125;
+        this.sizeModifier = Number((Math.random() * 0.2 + 0.81).toFixed(2));
+        this.x = this.game.width + Math.random() * this.game.width * 0.5;
+        this.y = Math.random() * this.game.height * 0.5 + 50;
+        this.image = document.getElementById('spirit');
+        // speed properties
+        this.speedX = Math.random() + 1;
+        this.speedY = 0;
+        this.maxSpeedX = 5;
+        // spritesheet frame properties
+        this.maxFrame = 19;
+        this.totalFramwX = 0;
+        this.totalFrameY = 2;
+        // vertical movement properties
+        this.angle = 0;
+        this.va = Number((Math.random() * 0.015 + 0.015).toFixed(5));
+        // hitbox properties
+        this.enemyRadius = this.width * 0.5;
+        this.enemyRadiusModifier = 0.5;
+        this.hitboxOffsetX = 0;
+        this.hitboxOffsetY = -10;
+    }
+    update(deltaTime){
+        super.update(deltaTime);
+        if (this.controlFpsTimer > this.controlFpsInterval){
+            this.controlFpsTimer -= this.controlFpsInterval;
+            this.angle += this.va;
+            this.y += Math.sin(this.angle);
+        } else {
+            this.controlFpsTimer += deltaTime;
+        }
     }
 }

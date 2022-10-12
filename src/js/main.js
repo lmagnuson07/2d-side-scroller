@@ -1,6 +1,6 @@
 import { Player } from './player';
 import { InputHandler } from './input';
-import { Beetle } from './enemy';
+import { Beetle, Spirit } from './enemy';
 import { Background } from './background';
 import { UI } from './ui';
 // - vite build --emptyOutDir
@@ -102,6 +102,7 @@ window.addEventListener('load', function(){
         }
         addEnemy(){
             if (Math.random() < 0.5) this.enemies.push(new Beetle(this));
+            if (Math.random() > 0.28) this.enemies.push(new Spirit(this))
         }
     }
     const game = new Game(canvas.width, canvas.height);
@@ -119,6 +120,7 @@ window.addEventListener('load', function(){
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         game.update(deltaTime);
         game.draw(ctx);
+        // console.log(Number((Math.random() * 0.015 + 0.015).toFixed(5)))
         if (!game.gameOver && !game.gameWon) requestAnimationFrame(animate);
         // requestAnimationFrame(animate);
     }

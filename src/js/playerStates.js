@@ -165,7 +165,7 @@ export class JumpingRight extends State {
         } else {
             if (!(inputKeys.includes('a') && inputKeys.includes('d'))){ // fixes a bug that was swapping right and left states rapidly 
                 if (inputKeys.includes('w')){
-                    this.game.player.setState(states.ROLLING_RIGHT, 3);
+                    this.game.player.setState(states.ROLLING_RIGHT, 1);
                 } else if (inputKeys.includes('a')){
                     this.game.player.setState(states.JUMPING_LEFT, 0);
                 } else if (inputKeys.includes('d')){
@@ -232,7 +232,7 @@ export class FallingRight extends State {
         } else {
             if (!(inputKeys.includes('a') && inputKeys.includes('d'))){ // fixes a bug that was swapping right and left states rapidly 
                 if (inputKeys.includes('w')){ 
-                    this.game.player.setState(states.ROLLING_RIGHT, 3);
+                    this.game.player.setState(states.ROLLING_RIGHT, 1);
                 } else if (inputKeys.includes('a')){
                     this.game.player.setState(states.FALLING_LEFT, 0);
                 } else if (inputKeys.includes('d')){
@@ -416,7 +416,11 @@ export class RollingRight extends State {
                 }
             } else {
                 if (this.game.player.frameX === this.game.player.maxFrame){
-                    this.game.player.setState(states.ROLLING_RIGHT, 3);
+                    if (inputKeys.includes('d')){
+                        this.game.player.setState(states.ROLLING_RIGHT, 3);
+                    } else {
+                        this.game.player.setState(states.ROLLING_RIGHT, 1);
+                    }
                 }
                 if (inputKeys.includes(' ') && this.game.player.vy > this.game.player.weight){
                     this.game.player.setState(states.DIVING_RIGHT, 0);
