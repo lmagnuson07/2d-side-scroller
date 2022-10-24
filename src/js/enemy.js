@@ -157,7 +157,7 @@ export class Spider extends Enemy {
         this.totalFrameX = 0;
          // hitbox properties
          this.enemyRadius = this.width * 0.5;
-         this.enemyRadiusModifier = 0;
+         this.enemyRadiusModifier = 0.5;
          this.hitboxOffsetX = 0;
          this.hitboxOffsetY = 0;
     }
