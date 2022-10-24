@@ -73,13 +73,12 @@ export class Beetle extends Enemy {
         super();
         this.game = game;
         this.enemyType = "Beetle";
-        this.grondMarginModifier = Math.random() > 0.8 ? 3 : Math.random() > 0.6 ? 2 : 0;
         // movement and position properties
         this.width = 143;
         this.height = 125;
         this.sizeModifier = Number((Math.random() * 0.05 + 0.96).toFixed(2));
         this.x = this.game.width;
-        this.y = this.game.height - this.height - this.game.groundMargin - this.grondMarginModifier;
+        this.y = this.game.height - this.height - this.game.groundMargin - this.game.grondMarginModifier;
         this.image = document.getElementById('beetle');
         // speed properties
         this.speedX = 0;
@@ -88,7 +87,6 @@ export class Beetle extends Enemy {
         // spritesheet frame properties
         this.maxFrame = 27;
         this.totalFrameX = 0;
-        this.totalFrameY = 2;
         // hitbox properties
         this.enemyRadius = this.width * 0.5;
         this.enemyRadiusModifier = 0.45;
@@ -110,13 +108,12 @@ export class Spirit extends Enemy {
         this.y = Math.random() * this.game.height * 0.5 + 50;
         this.image = document.getElementById('spirit');
         // speed properties
-        this.speedX = Math.random() + 1;
+        this.speedX = Math.random() + 1; // not sure why I have Math.random() here. Check at home.
         this.speedY = 0;
-        this.maxSpeedX = 5;
+        this.maxSpeedX = 8;
         // spritesheet frame properties
         this.maxFrame = 19;
-        this.totalFramwX = 0;
-        this.totalFrameY = 2;
+        this.totalFrameX = 0;
         // vertical movement properties
         this.angle = 0;
         this.va = Number((Math.random() * 0.015 + 0.015).toFixed(5));
@@ -135,5 +132,67 @@ export class Spirit extends Enemy {
         } else {
             this.controlFpsTimer += deltaTime;
         }
+    }
+}
+
+export class Spider extends Enemy {
+    constructor(game) {
+        super();
+        this.game = game;
+        this.enemyType = "Spider";
+        // movement and position properties
+        this.width = 143;
+        this.height = 125;
+        this.sizeModifier = 1;
+        this.x = this.game.width;
+        this.y = Math.random() * this.game.height * 0.5;
+        this.yWebModifier = 0;
+        this.image = document.getElementById('spider');
+        // speed properties
+        this.speedX = 0;
+        this.speedY = 2;
+        this.maxSpeedX = 0;
+        // spritesheet frame properties
+        this.maxFrame = 19;
+        this.totalFrameX = 0;
+         // hitbox properties
+         this.enemyRadius = this.width * 0.5;
+         this.enemyRadiusModifier = 0;
+         this.hitboxOffsetX = 0;
+         this.hitboxOffsetY = 0;
+    }
+    update(deltaTime){
+        super.update(deltaTime);    
+        if (this.controlFpsTimer > this.controlFpsInterval){
+            this.controlFpsTimer -= this.controlFpsInterval;
+            this.y += this.speedY;
+            if (this.y >= this.game.height - this.height - this.game.groundMargin - this.game.grondMarginModifier){
+                this.speedY = 0;
+                this.maxSpeedX = 6;
+            }
+        } else {
+            this.controlFpsTimer += deltaTime;
+        }
+    }
+    draw(ctx){
+        ctx.save();
+        if (this.maxSpeedX <= 0){
+            ctx.beginPath();
+            ctx.strokeStyle = "#fff";
+            ctx.moveTo(this.x + this.width * 0.5 ,0);
+            ctx.lineTo(this.x + this.width * 0.5, this.y + 50);
+            ctx.stroke();
+        } else {
+            if (this.yWebModifier < this.y){
+                this.yWebModifier += 10;
+                ctx.beginPath();
+                ctx.strokeStyle = "#fff";
+                ctx.moveTo((this.x + this.width * 0.5) + this.speedX + this.game.speed, 0 + this.yWebModifier);
+                ctx.lineTo(this.x + this.width * 0.5, this.y + 50);
+                ctx.stroke();
+            } 
+        }
+        super.draw(ctx);
+        ctx.restore();
     }
 }

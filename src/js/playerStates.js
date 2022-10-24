@@ -16,6 +16,14 @@ class State {
         this.state = state;
         this.game = game;
     }
+    updateEnergy(deltaTime, energyModifier){
+        if (this.game.controlFpsTimer > this.game.controlFpsInterval){
+            this.game.controlFpsTimer -= this.game.controlFpsInterval;
+            this.game.energy += energyModifier;
+        } else {
+            this.controlFpsTimer += deltaTime;
+        }
+    }
 }
 
 export class IdleRight extends State {
@@ -30,7 +38,9 @@ export class IdleRight extends State {
         this.game.player.maxFrame = 20; // total number of frames for the animation - 1
         this.game.player.frameY = 0;
     }
-    handleInput(inputKeys){
+    handleInput(inputKeys, deltaTime){
+        super.updateEnergy(deltaTime, 0);
+
         if (inputKeys.includes('w')){
             this.game.player.setState(states.SLIDING_RIGHT, 3);
         } else if (inputKeys.includes('d')){
@@ -61,7 +71,9 @@ export class IdleLeft extends State {
         this.game.player.maxFrame = 20;
         this.game.player.frameY = 0;
     }
-    handleInput(inputKeys){
+    handleInput(inputKeys, deltaTime){
+        super.updateEnergy(deltaTime, 0);
+
         if (inputKeys.includes('w')){
             this.game.player.setState(states.SLIDING_LEFT, 0);
         } else if (inputKeys.includes('d')){
@@ -92,7 +104,9 @@ export class RunningRight extends State {
         this.game.player.maxFrame = 18; 
         this.game.player.frameY = 2;
     }
-    handleInput(inputKeys){
+    handleInput(inputKeys, deltaTime){
+        super.updateEnergy(deltaTime, 0);
+
         if (!(inputKeys.includes('a') && inputKeys.includes('d'))){ // fixes a bug that was swapping right and left states rapidly 
             if (inputKeys.includes('w')){
                 this.game.player.setState(states.SLIDING_RIGHT, 3);
@@ -127,7 +141,9 @@ export class RunningLeft extends State {
         this.game.player.maxFrame = 18; 
         this.game.player.frameY = 2;
     }
-    handleInput(inputKeys){
+    handleInput(inputKeys, deltaTime){
+        super.updateEnergy(deltaTime, 0);
+
         if (inputKeys.includes('w')){
             this.game.player.setState(states.SLIDING_LEFT, 0);
         } else if (inputKeys.includes('d')){
@@ -155,7 +171,9 @@ export class JumpingRight extends State {
         this.game.player.maxFrame = 10; 
         this.game.player.frameY = 4;
     }
-    handleInput(inputKeys){
+    handleInput(inputKeys, deltaTime){
+        super.updateEnergy(deltaTime, 0);
+        
         if (this.game.player.vy > this.game.player.weight){
             if (inputKeys.includes('d')){
                 this.game.player.setState(states.FALLING_RIGHT, 1);
@@ -191,7 +209,9 @@ export class JumpingLeft extends State {
         this.game.player.maxFrame = 10; 
         this.game.player.frameY = 4;
     }
-    handleInput(inputKeys){
+    handleInput(inputKeys, deltaTime){
+        super.updateEnergy(deltaTime, 0);
+
         if (this.game.player.vy > this.game.player.weight){
             this.game.player.setState(states.FALLING_LEFT, 0);
         } else if (inputKeys.includes('w')){ 
@@ -218,7 +238,9 @@ export class FallingRight extends State {
         this.game.player.maxFrame = 10; 
         this.game.player.frameY = 5;
     }
-    handleInput(inputKeys){
+    handleInput(inputKeys, deltaTime){
+        super.updateEnergy(deltaTime, 0);
+
         if (this.game.player.onGround()){
             if (inputKeys.includes('d')){
                 this.game.player.setState(states.RUNNING_RIGHT, 1);
@@ -257,7 +279,9 @@ export class FallingLeft extends State {
         this.game.player.maxFrame = 10; 
         this.game.player.frameY = 5;
     }
-    handleInput(inputKeys){
+    handleInput(inputKeys, deltaTime){
+        super.updateEnergy(deltaTime, 0);
+
         if (this.game.player.onGround()){
             if (inputKeys.includes('d')){
                 this.game.player.setState(states.RUNNING_RIGHT, 1);
@@ -294,7 +318,9 @@ export class DodgingRight extends State {
         this.game.player.maxFrame = 20; 
         this.game.player.frameY = 7;
     }
-    handleInput(inputKeys){
+    handleInput(inputKeys, deltaTime){
+        super.updateEnergy(deltaTime, 0);
+
         if (!(inputKeys.includes('a') && inputKeys.includes('d'))){
             if (inputKeys.length === 0){
                 this.game.player.setState(states.IDLE_RIGHT, 0);
@@ -323,7 +349,9 @@ export class DodgingLeft extends State {
         this.game.player.maxFrame = 20; 
         this.game.player.frameY = 7;
     }
-    handleInput(inputKeys){
+    handleInput(inputKeys, deltaTime){
+        super.updateEnergy(deltaTime, 0);
+
         if (inputKeys.length === 0){
             this.game.player.setState(states.IDLE_LEFT, 0);
         } else if (inputKeys.includes('a') && !inputKeys.includes('s')){
@@ -350,7 +378,9 @@ export class SlidingRight extends State {
         this.game.player.maxFrame = 8; 
         this.game.player.frameY = 6;
     }
-    handleInput(inputKeys){
+    handleInput(inputKeys, deltaTime){
+        super.updateEnergy(deltaTime, 0);
+
         this.game.player.speed = 15;
         if (!inputKeys.includes('w')){
             if (inputKeys.includes('d')){
@@ -378,7 +408,9 @@ export class SlidingLeft extends State {
         this.game.player.maxFrame = 8; 
         this.game.player.frameY = 6;
     }
-    handleInput(inputKeys){
+    handleInput(inputKeys, deltaTime){
+        super.updateEnergy(deltaTime, 0);
+
         this.game.player.speed = -25;
         if (!inputKeys.includes('w')){
             if (inputKeys.includes('d')){
@@ -406,7 +438,9 @@ export class RollingRight extends State {
         this.game.player.maxFrame = 6; 
         this.game.player.frameY = 9;
     }
-    handleInput(inputKeys){
+    handleInput(inputKeys, deltaTime){
+        super.updateEnergy(deltaTime, 0);
+
         if (!this.game.player.onGround()){
             if (!inputKeys.includes('w')){
                 if (this.game.player.vy > this.game.player.weight){
@@ -452,7 +486,9 @@ export class RollingLeft extends State {
         this.game.player.maxFrame = 6; 
         this.game.player.frameY = 9;
     }
-    handleInput(inputKeys){
+    handleInput(inputKeys, deltaTime){
+        super.updateEnergy(deltaTime, 0);
+
         if (!this.game.player.onGround()){
             if (!inputKeys.includes('w')){
                 if (this.game.player.vy > this.game.player.weight){
@@ -496,7 +532,9 @@ export class DivingRight extends State {
         this.game.player.maxFrame = 6; 
         this.game.player.frameY = 9;
     }
-    handleInput(inputKeys){
+    handleInput(inputKeys, deltaTime){
+        super.updateEnergy(deltaTime, 0);
+
         if (!this.game.player.onGround()){
             this.game.player.vy = this.game.player.diveSpeed;
             if (this.game.player.frameX === this.game.player.maxFrame){
@@ -524,7 +562,9 @@ export class DivingLeft extends State {
         this.game.player.maxFrame = 6; 
         this.game.player.frameY = 9;
     }
-    handleInput(inputKeys){
+    handleInput(inputKeys, deltaTime){
+        super.updateEnergy(deltaTime, 0);
+
         if (!this.game.player.onGround()){
             this.game.player.vy = this.game.player.diveSpeed;
             if (this.game.player.frameX === this.game.player.maxFrame){
@@ -552,7 +592,9 @@ export class HitRight extends State {
         this.game.player.maxFrame = 15; 
         this.game.player.frameY = 10;
     }
-    handleInput(inputKeys){
+    handleInput(inputKeys, deltaTime){
+        super.updateEnergy(deltaTime, 0);
+
         if (this.game.player.totalFrameX >= this.game.player.maxFrame && this.game.player.onGround()){
             this.game.player.setState(states.IDLE_RIGHT, 0);
         } else if (this.game.player.totalFrameX >= this.game.player.maxFrame && !this.game.player.onGround()){
@@ -573,7 +615,9 @@ export class HitLeft extends State {
         this.game.player.maxFrame = 15; 
         this.game.player.frameY = 10;
     }
-    handleInput(inputKeys){
+    handleInput(inputKeys, deltaTime){
+        super.updateEnergy(deltaTime, 0);
+
         if (this.game.player.totalFrameX >= this.game.player.maxFrame && this.game.player.onGround()){
             this.game.player.setState(states.IDLE_LEFT, 0);
         } else if (this.game.player.totalFrameX >= this.game.player.maxFrame && !this.game.player.onGround()){
@@ -594,7 +638,9 @@ export class DizzyRight extends State {
         this.game.player.maxFrame = 20; 
         this.game.player.frameY = 12;
     }
-    handleInput(inputKeys){
+    handleInput(inputKeys, deltaTime){
+        super.updateEnergy(deltaTime, 0);
+
         if (this.game.player.totalFrameX >= this.game.player.maxFrame && this.game.player.onGround()){
             this.game.player.setState(states.IDLE_RIGHT, 0);
         } else if (this.game.player.totalFrameX >= this.game.player.maxFrame && !this.game.player.onGround()){
@@ -615,7 +661,9 @@ export class DizzyLeft extends State {
         this.game.player.maxFrame = 20; 
         this.game.player.frameY = 12;
     }
-    handleInput(inputKeys){
+    handleInput(inputKeys, deltaTime){
+        super.updateEnergy(deltaTime, 0);
+
         if (this.game.player.totalFrameX >= this.game.player.maxFrame && this.game.player.onGround()){
             this.game.player.setState(states.IDLE_LEFT, 0);
         } else if (this.game.player.totalFrameX >= this.game.player.maxFrame && !this.game.player.onGround()){

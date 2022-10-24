@@ -68,7 +68,7 @@ export class Player {
     update(inputKeys, deltaTime){
         //console.log(inputKeys)
         this.checkCollision();
-        this.currentState.handleInput(inputKeys);
+        this.currentState.handleInput(inputKeys, deltaTime);
         // Fps check
         if (this.controlFpsTimer > this.controlFpsInterval){
             // horizontal movement
@@ -205,16 +205,31 @@ export class Player {
                 this.game.collisions.push(new CollisionAnimation(this.game, enemy.x + enemy.width * 0.5, enemy.y + enemy.height * 0.5));
                 if (this.currentState === this.states[states.SLIDING_LEFT] ||
                     this.currentState === this.states[states.SLIDING_RIGHT]){
-                    this.game.score++;
-                    this.game.floatingMessages.push(new FloatingMessage('+1', enemy.x, enemy.y, 150, 50));
+                    if (enemy.enemyType === "Spider"){
+                        this.game.score += 5;
+                        this.game.floatingMessages.push(new FloatingMessage('+5', enemy.x, enemy.y, 150, 50));
+                    } else {
+                        this.game.score++;
+                        this.game.floatingMessages.push(new FloatingMessage('+1', enemy.x, enemy.y, 150, 50));
+                    }
                 } else if (this.currentState === this.states[states.DIVING_LEFT] ||
-                    this.currentState === this.states[states.DIVING_RIGHT]) {
-                    this.game.score += 5;
-                    this.game.floatingMessages.push(new FloatingMessage('+5', enemy.x, enemy.y, 150, 50));
+                    this.currentState === this.states[states.DIVING_RIGHT]){
+                    if (enemy.enemyType === "Spider"){
+                        this.game.score += 20;
+                        this.game.floatingMessages.push(new FloatingMessage('+20', enemy.x, enemy.y, 150, 50));
+                    } else {
+                        this.game.score += 5;
+                        this.game.floatingMessages.push(new FloatingMessage('+5', enemy.x, enemy.y, 150, 50));
+                    }
                 } else if (this.currentState === this.states[states.ROLLING_LEFT] ||
-                    this.currentState === this.states[states.ROLLING_RIGHT]) {
-                    this.game.score += 2;
-                    this.game.floatingMessages.push(new FloatingMessage('+2', enemy.x, enemy.y, 150, 50));
+                    this.currentState === this.states[states.ROLLING_RIGHT]){
+                    if (enemy.enemyType === "Spider"){
+                        this.game.score += 10;
+                        this.game.floatingMessages.push(new FloatingMessage('+10', enemy.x, enemy.y, 150, 50));
+                    } else {
+                        this.game.score += 2;
+                        this.game.floatingMessages.push(new FloatingMessage('+2', enemy.x, enemy.y, 150, 50));
+                    }
                 } else {
                     if (this.game.lives > this.game.totalLives * 0.5){
                         if (this.currentState === this.states[states.RUNNING_RIGHT] ||

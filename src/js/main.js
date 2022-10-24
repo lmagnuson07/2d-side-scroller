@@ -1,8 +1,9 @@
 import { Player } from './player';
 import { InputHandler } from './input';
-import { Beetle, Spirit } from './enemy';
+import { Beetle, Spider, Spirit } from './enemy';
 import { Background } from './background';
 import { UI } from './ui';
+import { EnergyBar } from './energybar';
 // - vite build --emptyOutDir
 
 window.addEventListener('load', function(){
@@ -37,6 +38,7 @@ window.addEventListener('load', function(){
             this.width = width;
             this.height = height;
             this.groundMargin = 66;
+            this.grondMarginModifier = Math.random() > 0.8 ? 3 : Math.random() > 0.6 ? 2 : 0;
             // game speed properties
             this.speed = 0;
             this.maxSpeed = 3; // 3 px per frame
@@ -47,6 +49,7 @@ window.addEventListener('load', function(){
             this.input = new InputHandler(this);
             this.background = new Background(this);
             this.ui = new UI(this);
+            this.energyBar = new EnergyBar(this);
             // object arrays
             this.enemies = [];
             this.floatingMessages = [];
@@ -66,8 +69,14 @@ window.addEventListener('load', function(){
             this.score = 0;
             this.lives = 10;
             this.totalLives = 10;
+            this.maxEnergy = 100;
+            this.energy = this.maxEnergy;
             // ui properties
             this.fontColor = '#fff';
+            // controls fps properties
+            this.controlFps = 60;
+            this.controlFpsInterval = 1000 / this.controlFps;
+            this.controlFpsTimer = 0;
         }
         update(deltaTime){
             // timer properties
@@ -99,10 +108,12 @@ window.addEventListener('load', function(){
                 object.draw(ctx);
             })
             this.ui.draw(ctx);
+            this.energyBar.draw(ctx);
         }
         addEnemy(){
             if (Math.random() < 0.5) this.enemies.push(new Beetle(this));
-            if (Math.random() > 0.28) this.enemies.push(new Spirit(this))
+            if (Math.random() > 0.28) this.enemies.push(new Spirit(this));
+            else if (Math.random() > 0.5) this.enemies.push(new Spider(this));
         }
     }
     const game = new Game(canvas.width, canvas.height);
