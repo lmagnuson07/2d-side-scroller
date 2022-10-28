@@ -5,7 +5,7 @@ export class EnergyBar {
         this.y = 140;
         this.width = 140;
         this.height = 36;
-        this.maxEnergy = 100;
+        //this.maxEnergy = 100;
         this.maxWidth = this.width;
         this.energy = this.maxEnergy;
         this.color = "green";
@@ -23,9 +23,11 @@ export class EnergyBar {
         if (this.game.controlFpsTimer > this.game.controlFpsInterval){
             this.game.controlFpsTimer -= this.game.controlFpsInterval;
             this.game.energy += energyModifier;
-            this.width = (this.energy / this.maxEnergy) * this.maxWidth;
+            if (this.game.energy >= this.game.maxEnergy) this.game.energy = this.game.maxEnergy;
+            else if (this.game.energy <= 0) this.game.energy = 0;
+            this.width = (this.game.energy / this.game.maxEnergy) * this.maxWidth;
         } else {
-            this.controlFpsTimer += deltaTime;
+            this.game.controlFpsTimer += deltaTime;
         }
     }
 }

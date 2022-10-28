@@ -69,7 +69,7 @@ window.addEventListener('load', function(){
             this.score = 0;
             this.lives = 10;
             this.totalLives = 10;
-            this.maxEnergy = 100;
+            this.maxEnergy = 200;
             this.energy = this.maxEnergy;
             // ui properties
             this.fontColor = '#fff';
