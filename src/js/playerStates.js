@@ -33,7 +33,11 @@ export class IdleRight extends State {
     handleInput(inputKeys, deltaTime){
         this.game.energyBar.update(deltaTime, 1.5);
 
-        if (inputKeys.includes('w')){
+        // fix a bug that causes player to jump in the air in sliding state if w and spacebar are pressed simultaneously 
+        if (inputKeys.includes('w') && inputKeys.includes(' ')){
+            this.game.player.setState(states.ROLLING_RIGHT, 1);
+        }
+        if (inputKeys.includes('w') && !this.game.energyBar.noEnergy){
             this.game.player.setState(states.SLIDING_RIGHT, 3);
         } else if (inputKeys.includes('d')){
             this.game.player.setState(states.RUNNING_RIGHT, 1);
@@ -66,7 +70,11 @@ export class IdleLeft extends State {
     handleInput(inputKeys, deltaTime){
         this.game.energyBar.update(deltaTime, 1.5);
 
-        if (inputKeys.includes('w')){
+        // fix a bug that causes player to jump in the air in sliding state if w and spacebar are pressed simultaneously 
+        if (inputKeys.includes('w') && inputKeys.includes(' ')){
+            this.game.player.setState(states.ROLLING_LEFT, 1);
+        }
+        if (inputKeys.includes('w') && !this.game.energyBar.noEnergy){
             this.game.player.setState(states.SLIDING_LEFT, 0);
         } else if (inputKeys.includes('d')){
             this.game.player.setState(states.RUNNING_RIGHT, 1);
@@ -99,8 +107,12 @@ export class RunningRight extends State {
     handleInput(inputKeys, deltaTime){
         this.game.energyBar.update(deltaTime, 1.5);
 
+        // fix a bug that causes player to jump in the air in sliding state if w and spacebar are pressed simultaneously 
+        if (inputKeys.includes('w') && inputKeys.includes(' ')){
+            this.game.player.setState(states.ROLLING_RIGHT, 1);
+        }
         if (!(inputKeys.includes('a') && inputKeys.includes('d'))){ // fixes a bug that was swapping right and left states rapidly 
-            if (inputKeys.includes('w')){
+            if (inputKeys.includes('w') && !this.game.energyBar.noEnergy){
                 this.game.player.setState(states.SLIDING_RIGHT, 3);
             } else if (inputKeys.includes('a')){
                 this.game.player.setState(states.RUNNING_LEFT, 0);
@@ -136,7 +148,11 @@ export class RunningLeft extends State {
     handleInput(inputKeys, deltaTime){
         this.game.energyBar.update(deltaTime, 1.5);
 
-        if (inputKeys.includes('w')){
+        // fix a bug that causes player to jump in the air in sliding state if w and spacebar are pressed simultaneously 
+        if (inputKeys.includes('w') && inputKeys.includes(' ')){
+            this.game.player.setState(states.ROLLING_LEFT, 1);
+        }
+        if (inputKeys.includes('w') && !this.game.energyBar.noEnergy){
             this.game.player.setState(states.SLIDING_LEFT, 0);
         } else if (inputKeys.includes('d')){
             this.game.player.setState(states.RUNNING_RIGHT, 1);
@@ -174,7 +190,7 @@ export class JumpingRight extends State {
             }
         } else {
             if (!(inputKeys.includes('a') && inputKeys.includes('d'))){ // fixes a bug that was swapping right and left states rapidly 
-                if (inputKeys.includes('w')){
+                if (inputKeys.includes('w') && !this.game.energyBar.noEnergy){
                     this.game.player.setState(states.ROLLING_RIGHT, 1);
                 } else if (inputKeys.includes('a')){
                     this.game.player.setState(states.JUMPING_LEFT, 0);
@@ -206,7 +222,7 @@ export class JumpingLeft extends State {
 
         if (this.game.player.vy > this.game.player.weight){
             this.game.player.setState(states.FALLING_LEFT, 0);
-        } else if (inputKeys.includes('w')){ 
+        } else if (inputKeys.includes('w') && !this.game.energyBar.noEnergy){ 
             this.game.player.setState(states.ROLLING_LEFT, 0);
         } else if (inputKeys.includes('d')) {
             this.game.player.setState(states.JUMPING_RIGHT, 1);
@@ -245,7 +261,7 @@ export class FallingRight extends State {
             }
         } else {
             if (!(inputKeys.includes('a') && inputKeys.includes('d'))){ // fixes a bug that was swapping right and left states rapidly 
-                if (inputKeys.includes('w')){ 
+                if (inputKeys.includes('w') && !this.game.energyBar.noEnergy){ 
                     this.game.player.setState(states.ROLLING_RIGHT, 1);
                 } else if (inputKeys.includes('a')){
                     this.game.player.setState(states.FALLING_LEFT, 0);
@@ -285,7 +301,7 @@ export class FallingLeft extends State {
                 this.game.player.setState(states.IDLE_LEFT, 0);
             }
         } else {
-            if (inputKeys.includes('w')){
+            if (inputKeys.includes('w') && !this.game.energyBar.noEnergy){
                 this.game.player.setState(states.ROLLING_LEFT, 0);
             } else if (inputKeys.includes('d')){
                 this.game.player.setState(states.FALLING_RIGHT, 1);
@@ -382,8 +398,19 @@ export class SlidingRight extends State {
             } else if (inputKeys.length === 0){
                 this.game.player.setState(states.IDLE_RIGHT, 0);
             }
-        } else if (this.game.player.frameX === this.game.player.maxFrame){
+        } else if (this.game.player.frameX === this.game.player.maxFrame && !this.game.energyBar.noEnergy){
             this.game.player.setState(states.SLIDING_RIGHT, 3);
+        }
+        if (this.game.energyBar.noEnergy && inputKeys.includes('w')){
+            if (inputKeys.includes('d')){
+                this.game.player.setState(states.RUNNING_RIGHT, 1);
+            } else if (inputKeys.includes('a')){
+                this.game.player.setState(states.RUNNING_LEFT, 0);
+            } else if (inputKeys.length === 0){
+                this.game.player.setState(states.IDLE_RIGHT, 0);
+            } else {
+                this.game.player.setState(states.IDLE_RIGHT, 0);
+            }
         }
     }
 }
@@ -412,8 +439,20 @@ export class SlidingLeft extends State {
             } else if (inputKeys.length === 0){
                 this.game.player.setState(states.IDLE_RIGHT, 0);
             }
-        } else if (this.game.player.frameX === this.game.player.maxFrame){
+        } else if (this.game.player.frameX === this.game.player.maxFrame && !this.game.energyBar.noEnergy){
             this.game.player.setState(states.SLIDING_LEFT, 0);
+        }
+        
+        if (this.game.energyBar.noEnergy && inputKeys.includes('w')){
+            if (inputKeys.includes('d')){
+                this.game.player.setState(states.RUNNING_RIGHT, 1);
+            } else if (inputKeys.includes('a')){
+                this.game.player.setState(states.RUNNING_LEFT, 0);
+            } else if (inputKeys.length === 0){
+                this.game.player.setState(states.IDLE_LEFT, 0);
+            } else {
+                this.game.player.setState(states.IDLE_LEFT, 0);
+            }
         }
     }
 }
@@ -434,7 +473,7 @@ export class RollingRight extends State {
         this.game.energyBar.update(deltaTime, -1.5);
 
         if (!this.game.player.onGround()){
-            if (!inputKeys.includes('w')){
+            if (!inputKeys.includes('w') && !this.game.energyBar.noEnergy){
                 if (this.game.player.vy > this.game.player.weight){
                     this.game.player.setState(states.FALLING_RIGHT, 1);
                 } else {
@@ -457,7 +496,7 @@ export class RollingRight extends State {
                 }
             } 
         } else {
-            if (inputKeys.includes('w')){
+            if (inputKeys.includes('w') && !this.game.energyBar.noEnergy){
                 this.game.player.setState(states.SLIDING_RIGHT, 3);
             } else {
                 this.game.player.setState(states.IDLE_RIGHT, 0);
@@ -482,7 +521,7 @@ export class RollingLeft extends State {
         this.game.energyBar.update(deltaTime, -1.5);
 
         if (!this.game.player.onGround()){
-            if (!inputKeys.includes('w')){
+            if (!inputKeys.includes('w') && !this.game.energyBar.noEnergy){
                 if (this.game.player.vy > this.game.player.weight){
                     this.game.player.setState(states.FALLING_LEFT, 0);
                 } else {
@@ -503,7 +542,7 @@ export class RollingLeft extends State {
                 }
             }
         } else {
-            if (inputKeys.includes('w')){
+            if (inputKeys.includes('w') && !this.game.energyBar.noEnergy){
                 this.game.player.setState(states.SLIDING_LEFT, 0);
             } else {
                 this.game.player.setState(states.IDLE_LEFT, 0);
@@ -525,7 +564,7 @@ export class DivingRight extends State {
         this.game.player.frameY = 9;
     }
     handleInput(inputKeys, deltaTime){
-        this.game.energyBar.update(deltaTime, -2);
+        this.game.energyBar.update(deltaTime, -4);
 
         if (!this.game.player.onGround()){
             this.game.player.vy = this.game.player.diveSpeed;
@@ -555,7 +594,7 @@ export class DivingLeft extends State {
         this.game.player.frameY = 9;
     }
     handleInput(inputKeys, deltaTime){
-        this.game.energyBar.update(deltaTime, -2);
+        this.game.energyBar.update(deltaTime, -4);
 
         if (!this.game.player.onGround()){
             this.game.player.vy = this.game.player.diveSpeed;
