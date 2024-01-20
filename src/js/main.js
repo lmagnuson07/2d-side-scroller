@@ -6,18 +6,27 @@ import { UI } from './ui';
 import { EnergyBar } from './energybar';
 // - vite build --emptyOutDir
 
-window.addEventListener('load', function(){
-    // hides loading message
-    const loading = document.getElementById('loading');
-    loading.style.display = 'none';
+// canvas setup
+const canvas = document.getElementById('canvas1');
+canvas.style.display = 'block';
+const ctx = canvas.getContext('2d');
+canvas.width = 1400;
+canvas.height = 768;
 
-    // canvas setup
-    const canvas = document.getElementById('canvas1');
-    canvas.style.display = 'block';
-    const ctx = canvas.getContext('2d');
-    canvas.width = 1400;
-    canvas.height = 768;
-    
+// Draw loading
+ctx.save();
+ctx.shadowOffsetX = 2;
+ctx.shadowOffsetY = 2;
+ctx.shadowColor = '#050402';
+ctx.shadowBlur = 0;
+ctx.font = '120px Lakki Reddy, cursive';
+ctx.textAlign = 'center';
+ctx.fillStyle = 'white';
+// score
+ctx.fillText('Loading...', canvas.width * 0.5, canvas.height * 0.5);
+ctx.restore();
+
+window.addEventListener('load', function(){
     // implements the fullscreen functionality 
     const fullScreenBtn = document.getElementById('fullScreenBtn');
     const toggleFullScreen = function(){

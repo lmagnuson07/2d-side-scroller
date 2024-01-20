@@ -1,44 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/logo.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="/logo.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>2d Side-Scroller</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lakki+Reddy&display=swap" rel="stylesheet"> 
+    <link href="https://fonts.googleapis.com/css2?family=Chelsea+Market&family=Lakki+Reddy&display=swap" rel="stylesheet"> 
     <link rel="stylesheet" href="./styles/global.css">
     <script type="module" src="./js/main.js"></script>
   </head>
   <body>
-    <canvas class="d-none" id="canvas1"></canvas>
-    <button id="fullScreenBtn">Toggle Fullscreen</button>
-    <p id="loading">LOADING...</p>
-
     <!-- Player spritesheets -->
-    <img src="/spritesheeets/player/player-spritesheet.png" class="d-none" id="player">
-    <img src="/spritesheeets/player/player-spritesheet-mirrored.png" class="d-none" id="playerMirrored">
+    <img src="/spritesheeets/player/player-spritesheet.png" class="d-none" id="player" alt="Player forward spritesheet">
+    <img src="/spritesheeets/player/player-spritesheet-mirrored.png" class="d-none" id="playerMirrored" alt="Player backward spritesheet">
     
     <!-- Enemy spritesheets -->
-    <img src="/spritesheeets/enemies/beetle.png" class="d-none" id="beetle">
-    <img src="/spritesheeets/enemies/spirit.png" class="d-none" id="spirit">
-    <img src="/spritesheeets/enemies/spider.png" class="d-none" id="spider">
+    <img src="/spritesheeets/enemies/beetle.png" class="d-none" id="beetle" alt="Beetle spritesheet">
+    <img src="/spritesheeets/enemies/spirit.png" class="d-none" id="spirit" alt="Spirit spritesheet">
+    <img src="/spritesheeets/enemies/spider.png" class="d-none" id="spider" alt="Spider spritesheet">
 
     <!-- Background images -->
-    <img src="/background/layer-1.png" class="d-none" id="layer1">
-    <img src="/background/layer-2.png" class="d-none" id="layer2">
-    <img src="/background/layer-3.png" class="d-none" id="layer3">
-    <img src="/background/layer-4.png" class="d-none" id="layer4">
-    <img src="/background/layer-5.png" class="d-none" id="layer5">
-    <img src="/background/layer-6.png" class="d-none" id="layer6">
-    <img src="/background/layer-7.png" class="d-none" id="layer7">
-    <img src="/background/layer-8.png" class="d-none" id="layer8">
+    <img src="/background/layer-1.png" class="d-none" id="layer1" alt="Star layer">
+    <img src="/background/layer-2.png" class="d-none" id="layer2" alt="Far clouds layer">
+    <img src="/background/layer-3.png" class="d-none" id="layer3" alt="Large mountain layer">
+    <img src="/background/layer-4.png" class="d-none" id="layer4" alt="Close clouds layer">
+    <img src="/background/layer-5.png" class="d-none" id="layer5" alt="Small mountain layer">
+    <img src="/background/layer-6.png" class="d-none" id="layer6" alt="Landscape layer">
+    <img src="/background/layer-7.png" class="d-none" id="layer7" alt="Ground layer">
+    <img src="/background/layer-8.png" class="d-none" id="layer8" alt="Lava layer">
     
     <!-- Misc images -->
-    <img src="/other/hearts-full.png" class="d-none" id="heartFull">
-    <img src="/other/hearts-half.png" class="d-none" id="heartHalf">
-    <img src="/other/hearts-empty.png" class="d-none" id="heartEmpty">
-    <img src="/other/boom.png" class="d-none" id="boom">
+    <img src="/other/hearts-full.png" class="d-none" id="heartFull" alt="Heart full image">
+    <img src="/other/hearts-half.png" class="d-none" id="heartHalf" alt="Heart half full image">
+    <img src="/other/hearts-empty.png" class="d-none" id="heartEmpty" alt="Heart empty image">
+    <img src="/other/boom.png" class="d-none" id="boom" alt="Collision spritesheet">
+    <header>
+      <div class="container">
+        <h1>Logan Magnuson's <br> 2d Side-Scroller</h1>
+      </div>
+    </header>
+    <main>
+      <div class="container">
+        <button id="fullScreenBtn">Toggle Fullscreen</button>
+        <canvas id="canvas1" width="1400" height="768"></canvas>
+      </div>
+    </main>
+      
   </body>
 </html>
